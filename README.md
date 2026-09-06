@@ -2,6 +2,10 @@
 
 Bench app for the FORM stretch sensor. Reads a XIAO nRF52840 Sense over USB, shows live cord resistance and motion, records labelled sessions to CSV, and charts every recording with rep detection.
 
+![v1 prototype: the XIAO on a mini breadboard strapped to the black elastic band, resistor and jumper wires in place, USB cable to the laptop](docs/images/v1-prototype.jpg)
+
+**v1 prototype, Sept 5, 2026.** The whole breadboard rides on the elastic band, the cord runs along the band under it, and the board is powered and read over USB. First on-body recording: 5 curls, 5 clear peaks.
+
 The `sessions/` folder is the shared dataset. Everyone who records commits and pushes their sessions so the data lives in one place.
 
 ## Set up on a new laptop (Suna, read this)
