@@ -1,0 +1,160 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FORM Recording Protocol</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root { --paper:#FAF8F3; --cream:#F1ECE3; --ink:#0B0A09; --ink-2:#2A2724; --stone:#8B8377; --line:rgba(11,10,9,.14); --blush:#C4A094; --accent:#C2573A; --panel:#FFFFFF; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper:#0B0A09; --cream:#161412; --ink:#F1ECE3; --ink-2:#D8D2C6; --stone:#A89E90; --line:rgba(241,236,227,.16); --accent:#D96A4E; --panel:#161412; } }
+  :root[data-theme="dark"] { --paper:#0B0A09; --cream:#161412; --ink:#F1ECE3; --ink-2:#D8D2C6; --stone:#A89E90; --line:rgba(241,236,227,.16); --accent:#D96A4E; --panel:#161412; }
+  body { background: var(--paper); color: var(--ink); font-family: "Instrument Sans", -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.55; }
+  main { max-width: 760px; margin: 0 auto; padding: 44px 22px 90px; }
+  .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--stone); }
+  h1 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; font-size: 2.6rem; line-height: 1.05; margin: 6px 0 10px; text-wrap: balance; }
+  h1 em { font-style: italic; color: var(--stone); }
+  h2 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; font-size: 1.6rem; margin: 0 0 10px; text-wrap: balance; }
+  section { padding: 30px 0; border-top: 1px solid var(--line); }
+  p { max-width: 64ch; margin: 0 0 12px; }
+  .lede { color: var(--stone); font-size: 17px; margin-bottom: 36px; }
+  ol, ul { padding-left: 22px; max-width: 64ch; } li { margin-bottom: 7px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; margin: 12px 0 6px; }
+  th { text-align: left; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--stone); font-weight: 600; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--ink); }
+  td { padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.n, th.n { text-align: right; font-family: "JetBrains Mono", Menlo, monospace; font-variant-numeric: tabular-nums; }
+  .tbl { overflow-x: auto; }
+  code, .mono { font-family: "JetBrains Mono", Menlo, monospace; font-size: .9em; }
+  .rule { background: var(--cream); border-left: 4px solid var(--accent); padding: 12px 16px; margin: 16px 0; max-width: 64ch; }
+  .rule strong { color: var(--accent); }
+  .script li { margin-bottom: 4px; }
+  .mark { display: inline-block; font-family: "JetBrains Mono", Menlo, monospace; font-size: 12px; background: var(--ink); color: var(--paper); padding: 1px 7px; border-radius: 3px; }
+  .why { color: var(--stone); font-size: 14px; }
+  .total { font-family: "Instrument Serif", Georgia, serif; font-size: 1.3rem; }
+</style>
+
+<main>
+  <div class="eyebrow">FORM · data collection · v1</div>
+  <h1>Recording protocol, <em>for Gigi and Suna</em></h1>
+  <p class="lede">What to record so a program can learn which exercise you're doing and how hard the muscle is working. Same setup every time, one exercise per recording, and one deliberately messy session per gym visit.</p>
+
+  <section>
+    <h2>The one rule that matters</h2>
+    <div class="rule"><strong>Same setup, every time.</strong> Band on the right bicep, and "band on" set to right bicep in the form. Board riding on the upper arm, USB port pointing toward the shoulder. Band snug enough that two fingers slide under, no more. The motion sensor is on the board, so where the board sits decides what "up" and "forward" mean. If the board is loose or upside down, the data from that day can't be compared with any other day.</div>
+    <ol>
+      <li>Put the band on. Check the board orientation. Check nothing dangles.</li>
+      <li>Open FORM Lab. The dot in the corner should be green.</li>
+      <li>Fill the form: person, exercise, load, reps planned. Notes if anything is unusual.</li>
+      <li>Press <strong>Record</strong>. Stand or sit still for 3 seconds. This gives every recording a calm start to measure from.</li>
+      <li>Do the set. Count reps out loud so you know the true number.</li>
+      <li>Still for 3 seconds. Press <strong>Stop &amp; save</strong>.</li>
+      <li>If anything went wrong, open the recording, set quality to "bad, ignore", save. Don't delete it.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>The labels, and what they mean</h2>
+    <p>Every recording gets a small label card saved beside its data. The app fills it from the form. You can edit it later by opening the recording and pressing Save labels.</p>
+    <div class="tbl"><table>
+      <tr><th>field</th><th>values</th><th>why it matters</th></tr>
+      <tr><td><span class="mono">person</span></td><td>gigi · suna · other</td><td>The program must work on arms it hasn't seen. Two people is the minimum to check that.</td></tr>
+      <tr><td><span class="mono">band on</span></td><td>right bicep · left bicep · forearm · thigh · calf · chest · waist</td><td>Where the band sits. The same curl looks completely different from the thigh. Version 1 is right bicep for everything; the field exists so later placements don't get mixed in.</td></tr>
+      <tr><td><span class="mono">exercise</span></td><td>one of the classes below</td><td>The answer the program is learning to give.</td></tr>
+      <tr><td><span class="mono">load</span></td><td>none · light · medium · heavy</td><td>Lets us see whether heavier sets make a bigger cord bump. That's FORM's promise.</td></tr>
+      <tr><td><span class="mono">reps planned</span></td><td>a number</td><td>Ground truth for the rep counter. Count out loud so this is right.</td></tr>
+      <tr><td><span class="mono">quality</span></td><td>good · ok · bad</td><td>Bad recordings stay on disk but are left out of training.</td></tr>
+      <tr><td><span class="mono">marks</span></td><td>timestamps with a word</td><td>Only used in messy sessions, to say what was happening when. See below.</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Eight classes</h2>
+    <p>Six real exercises the band on the bicep can plausibly tell apart, plus two that exist to teach the program what "not a curl" looks like. Start here. Don't add classes until these are solid.</p>
+    <div class="tbl"><table>
+      <tr><th>class</th><th>what to do</th><th>why it's in</th></tr>
+      <tr><td><strong>bicep curl</strong></td><td>palms up, elbow pinned, full range</td><td class="why">The core case. Big cord bump, forearm rotates up.</td></tr>
+      <tr><td><strong>hammer curl</strong></td><td>palms facing each other, same motion</td><td class="why">Nearly the same motion as a curl. Tests whether the sensors see grip and muscle differences.</td></tr>
+      <tr><td><strong>shoulder press</strong></td><td>from shoulders to overhead</td><td class="why">Arm goes vertical. Very different orientation, small bicep bump.</td></tr>
+      <tr><td><strong>lateral raise</strong></td><td>straight arm out to the side to shoulder height</td><td class="why">Rotation around a different axis, almost no bicep.</td></tr>
+      <tr><td><strong>front raise</strong></td><td>straight arm forward to shoulder height</td><td class="why">Looks like a lateral raise to the cord, differs only in motion direction. Good hard pair.</td></tr>
+      <tr><td><strong>bent-over row</strong></td><td>hinge at hips, pull the weight to the ribs</td><td class="why">Bicep works, but the arm travels backward and the torso is tilted.</td></tr>
+      <tr><td><strong>tricep extension</strong></td><td>overhead, lower behind the head, extend</td><td class="why">The opposite muscle. Arm moves, cord should barely react. Teaches "motion without bicep".</td></tr>
+      <tr><td><strong>squat</strong></td><td>bodyweight or goblet, band still on the arm</td><td class="why">The arm is passive. Teaches the program that whole-body movement is not a rep.</td></tr>
+    </table></div>
+    <p>Squat is the only leg exercise. Everything else in the gym that isn't on this list goes into the messy session, not into its own class.</p>
+  </section>
+
+  <section>
+    <h2>What to record: the clean sets</h2>
+    <p>One recording per set. A set is 10 reps at a steady pace, about 2 seconds up and 2 seconds down, with a 3-second still period at each end. Each person does every class at two loads, and then repeats the whole thing on a different day.</p>
+    <div class="tbl"><table>
+      <tr><th>class</th><th>load A</th><th>load B</th><th class="n">sets per person per day</th></tr>
+      <tr><td>bicep curl</td><td>light</td><td>heavy</td><td class="n">2</td></tr>
+      <tr><td>hammer curl</td><td>light</td><td>heavy</td><td class="n">2</td></tr>
+      <tr><td>shoulder press</td><td>light</td><td>medium</td><td class="n">2</td></tr>
+      <tr><td>lateral raise</td><td>none</td><td>light</td><td class="n">2</td></tr>
+      <tr><td>front raise</td><td>none</td><td>light</td><td class="n">2</td></tr>
+      <tr><td>bent-over row</td><td>light</td><td>heavy</td><td class="n">2</td></tr>
+      <tr><td>tricep extension</td><td>light</td><td>medium</td><td class="n">2</td></tr>
+      <tr><td>squat</td><td>none</td><td>light (goblet)</td><td class="n">2</td></tr>
+    </table></div>
+    <p class="total">16 sets per person per day. Two people, two days: 64 clean recordings, 640 labelled reps.</p>
+    <p>"Light" and "heavy" mean what they mean for you. Pick the weights on day one, write them in the notes field, and use the same ones on day two.</p>
+    <p>Add one extra curl set per day at a deliberately slow tempo, 4 seconds up and 4 down, labelled with "slow" in the notes. It tests whether time under tension is measured, not just counted.</p>
+  </section>
+
+  <section>
+    <h2>The messy session</h2>
+    <p>Clean sets teach the program what exercises look like. They don't teach it what everything else looks like, and in a real gym everything else is most of the time. So once per gym visit, record one long session where you just train, with the band on, and drop marks as you go.</p>
+    <p>Choose exercise <strong>messy gym session</strong> in the form, press Record, and leave it running for 8 to 12 minutes. During it, type a word in the mark box and press Enter whenever something changes. Marks are just timestamps with a word. They don't have to be perfect, and it's fine to type them a second or two late.</p>
+    <p>A script that covers the ground, in roughly this order:</p>
+    <ol class="script">
+      <li>Walk to the dumbbell rack. <span class="mark">walking</span></li>
+      <li>Pick up weights, carry them, put them down. <span class="mark">carrying</span></li>
+      <li>Check your phone for 20 seconds. <span class="mark">phone</span></li>
+      <li>A set of curls, don't count carefully, just train. <span class="mark">curl</span> at the start, <span class="mark">end</span> after.</li>
+      <li>Rest a minute. Fidget, drink water, fix your hair. <span class="mark">rest</span></li>
+      <li>A set of a different exercise from the list. <span class="mark">press</span> or whichever, then <span class="mark">end</span>.</li>
+      <li>Re-rack the weights. <span class="mark">carrying</span></li>
+      <li>Something not on the list at all: stretching, a plank, a cable machine. <span class="mark">other</span></li>
+      <li>One more set of anything. Mark it. <span class="mark">end</span>.</li>
+      <li>Walk away, sit down, press Stop &amp; save.</li>
+    </ol>
+    <p>The words to use for marks, so they're consistent: <span class="mono">walking · carrying · phone · rest · water · other · end</span>, plus the class names <span class="mono">curl · hammer · press · lateral · front · row · tricep · squat</span>.</p>
+  </section>
+
+  <section>
+    <h2>The "other" class, on purpose</h2>
+    <p>Besides the messy session, record a few short deliberate "not exercising" clips, labelled <strong>other / not exercising</strong> with the activity in the notes. About a minute each. These are the things most likely to fool a rep counter.</p>
+    <ul>
+      <li>Sitting still, then standing still</li>
+      <li>Walking normally, arms swinging</li>
+      <li>Scrolling a phone with that arm</li>
+      <li>Drinking from a bottle, five sips</li>
+      <li>Putting on and taking off a jacket</li>
+      <li>Picking up a dumbbell from the floor and putting it back, five times, no reps</li>
+      <li>Adjusting the band itself</li>
+    </ul>
+    <p>Seven clips per person, once. About 15 minutes total.</p>
+  </section>
+
+  <section>
+    <h2>When to mark a recording bad</h2>
+    <ul>
+      <li>The band slipped or was re-tightened mid-set.</li>
+      <li>The board came loose or rotated on the arm.</li>
+      <li>The green dot went out during the set (board disconnected). The recording will be short.</li>
+      <li>You lost count and don't know the true rep number.</li>
+      <li>Someone talked to you and you stopped halfway.</li>
+    </ul>
+    <p>Bad recordings are still useful later for seeing what failure looks like, so mark them, don't delete them.</p>
+  </section>
+
+  <section>
+    <h2>What we'll do with it</h2>
+    <ol>
+      <li>After day one, I lay the eight classes side by side and we look at whether the motion traces separate by eye. That's the go / no-go for the approach.</li>
+      <li>Each rep gets cut out using the cord peaks, and turned into a handful of numbers: which way gravity pointed at the start and at the top, which axis rotated most, how long the rep took, how tall the cord bump was.</li>
+      <li>A simple classifier on those numbers, trained on day one, tested on day two and on the other person. If it holds above 90 percent on five or more classes, the idea is proven.</li>
+      <li>The messy sessions then test the harder question: can it stay quiet when you're not exercising, and wake up when a set starts.</li>
+    </ol>
+  </section>
+</main>

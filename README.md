@@ -57,6 +57,10 @@ git push
 ```
 `git pull` first so you get everyone else's recordings too.
 
+## Docs
+- `docs/bench-manual.html` — the picture-by-picture bench manual: pieces, soldering, wiring, the first readings, the on-arm test, and the wireless plan. Open it in a browser.
+- `docs/recording-protocol.html` — what to record and how to label it: setup rule, label fields, the eight exercise classes, clean sets, the messy gym session script.
+
 ## What's in here
 - `server.js` — Node server. `serialport` is the only dependency. Serial in, server-sent events out at `/stream`, REST under `/api`.
 - `public/index.html` — the page. Canvas charts, no framework.

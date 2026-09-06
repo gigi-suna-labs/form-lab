@@ -1,0 +1,718 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FORM Bench Manual</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  :root {
+    --paper: #F7F4EC;
+    --ink: #1E1D1A;
+    --muted: #6B665C;
+    --rule: #D9D3C4;
+    --panel: #EFEAE0;
+    --board-blue: #2E3F97;
+    --board-blue-deep: #1F2C6E;
+    --pcb: #1C6B4A;
+    --pcb-deep: #124A33;
+    --gold: #D4A72C;
+    --solder: #9AA3AD;
+    --solder-hi: #DCE2E8;
+    --iron: #3A3D42;
+    --hot: #E0532B;
+    --bad: #B3261E;
+    --good: #2E7D4F;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #191816; --ink: #ECE7DB; --muted: #A49E91; --rule: #3A3733; --panel: #232220;
+      --board-blue: #4A5CC4; --board-blue-deep: #2E3F97; --pcb: #2A8C62; --pcb-deep: #1C6B4A;
+      --solder: #B6BEC7; --solder-hi: #F0F3F6; --iron: #C8CBD0; --good: #57B37F; --bad: #E0625A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #191816; --ink: #ECE7DB; --muted: #A49E91; --rule: #3A3733; --panel: #232220;
+    --board-blue: #4A5CC4; --board-blue-deep: #2E3F97; --pcb: #2A8C62; --pcb-deep: #1C6B4A;
+    --solder: #B6BEC7; --solder-hi: #F0F3F6; --iron: #C8CBD0; --good: #57B37F; --bad: #E0625A;
+  }
+  body { background: var(--paper); color: var(--ink); font-family: "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif; font-size: 17px; line-height: 1.5; }
+  main { max-width: 720px; margin: 0 auto; padding: 40px 20px 80px; }
+  h1 { font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 2.4rem; line-height: 1.05; margin: 0 0 8px; text-wrap: balance; letter-spacing: -0.01em; }
+  .lede { color: var(--muted); margin: 0 0 40px; max-width: 60ch; }
+  h2 { font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 1.45rem; line-height: 1.15; margin: 0 0 12px; text-wrap: balance; }
+  section { padding: 32px 0; border-top: 1px solid var(--rule); }
+  .step { font-family: "JetBrains Mono", Menlo, monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  p { max-width: 62ch; margin: 0 0 14px; }
+  figure { margin: 20px 0 8px; }
+  svg { display: block; max-width: 100%; height: auto; }
+  figcaption { font-size: 0.9rem; color: var(--muted); margin-top: 10px; max-width: 62ch; }
+  .svg-label { font-family: "Atkinson Hyperlegible", Arial, sans-serif; font-size: 12px; fill: var(--ink); }
+  .svg-mono { font-family: "JetBrains Mono", Menlo, monospace; font-size: 11px; fill: var(--ink); }
+  .svg-muted { fill: var(--muted); }
+  .svg-hot { fill: var(--hot); }
+  ol { padding-left: 22px; max-width: 62ch; } li { margin-bottom: 8px; }
+  .callout { background: var(--panel); padding: 14px 18px; border-left: 4px solid var(--hot); margin: 18px 0; max-width: 62ch; }
+  .callout strong { font-family: "Bricolage Grotesque", sans-serif; }
+  .stop { border-left-color: var(--good); }
+  .chart-wrap { position: relative; }
+  .tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--paper); font-family: "JetBrains Mono", Menlo, monospace; font-size: 12px; padding: 4px 8px; border-radius: 4px; white-space: nowrap; }
+  table.data { border-collapse: collapse; font-family: "JetBrains Mono", Menlo, monospace; font-size: 13px; font-variant-numeric: tabular-nums; }
+  table.data th, table.data td { text-align: right; padding: 3px 14px 3px 0; border-bottom: 1px solid var(--rule); }
+  details summary { cursor: pointer; color: var(--muted); margin: 8px 0; }
+  code { font-family: "JetBrains Mono", Menlo, monospace; font-size: 0.9em; }
+</style>
+
+<main>
+  <div class="step">FORM · P0 · from bare board to first reading</div>
+  <h1>FORM bench manual</h1>
+  <p class="lede">Everything on this page is what you have on your table right now. Read a step, look at the picture, do the step. Steps 1 to 5 give the XIAO legs. Steps 6 to 9 wire the cord and get the first live reading. Then the first reading itself, and the plan for putting it on your arm.</p>
+
+  <section>
+    <div class="step">Step 1 · What the pieces are</div>
+    <h2>Three objects, and what each one is for</h2>
+    <figure>
+      <svg viewBox="0 0 700 300" role="img" aria-label="The XIAO board with 7 holes per edge, a header strip with short pins on one side and long pins on the other, and a breadboard whose rows of five holes are connected inside." xmlns="http://www.w3.org/2000/svg">
+        <!-- XIAO top view -->
+        <g transform="translate(40,40)">
+          <rect x="0" y="0" width="150" height="190" rx="10" fill="var(--pcb)" />
+          <rect x="52" y="-8" width="46" height="24" rx="4" fill="var(--solder)" />
+          <rect x="30" y="50" width="90" height="100" rx="4" fill="var(--pcb-deep)" />
+          <g fill="var(--gold)">
+            <circle cx="16" cy="40" r="6"/><circle cx="16" cy="62" r="6"/><circle cx="16" cy="84" r="6"/><circle cx="16" cy="106" r="6"/><circle cx="16" cy="128" r="6"/><circle cx="16" cy="150" r="6"/><circle cx="16" cy="172" r="6"/>
+            <circle cx="134" cy="40" r="6"/><circle cx="134" cy="62" r="6"/><circle cx="134" cy="84" r="6"/><circle cx="134" cy="106" r="6"/><circle cx="134" cy="128" r="6"/><circle cx="134" cy="150" r="6"/><circle cx="134" cy="172" r="6"/>
+          </g>
+          <g fill="var(--pcb)">
+            <circle cx="16" cy="40" r="2.5"/><circle cx="16" cy="62" r="2.5"/><circle cx="16" cy="84" r="2.5"/><circle cx="16" cy="106" r="2.5"/><circle cx="16" cy="128" r="2.5"/><circle cx="16" cy="150" r="2.5"/><circle cx="16" cy="172" r="2.5"/>
+            <circle cx="134" cy="40" r="2.5"/><circle cx="134" cy="62" r="2.5"/><circle cx="134" cy="84" r="2.5"/><circle cx="134" cy="106" r="2.5"/><circle cx="134" cy="128" r="2.5"/><circle cx="134" cy="150" r="2.5"/><circle cx="134" cy="172" r="2.5"/>
+          </g>
+          <text x="75" y="220" class="svg-label" text-anchor="middle" font-weight="700">XIAO</text>
+          <text x="75" y="236" class="svg-label svg-muted" text-anchor="middle">tiny computer</text>
+          <text x="75" y="252" class="svg-label svg-muted" text-anchor="middle">7 holes each side</text>
+          <text x="75" y="-16" class="svg-label svg-muted" text-anchor="middle">USB port</text>
+        </g>
+
+        <!-- header strip side view -->
+        <g transform="translate(260,90)">
+          <g stroke="var(--solder)" stroke-width="5" stroke-linecap="round">
+            <line x1="12" y1="0" x2="12" y2="26"/><line x1="34" y1="0" x2="34" y2="26"/><line x1="56" y1="0" x2="56" y2="26"/><line x1="78" y1="0" x2="78" y2="26"/><line x1="100" y1="0" x2="100" y2="26"/><line x1="122" y1="0" x2="122" y2="26"/><line x1="144" y1="0" x2="144" y2="26"/>
+            <line x1="12" y1="44" x2="12" y2="96"/><line x1="34" y1="44" x2="34" y2="96"/><line x1="56" y1="44" x2="56" y2="96"/><line x1="78" y1="44" x2="78" y2="96"/><line x1="100" y1="44" x2="100" y2="96"/><line x1="122" y1="44" x2="122" y2="96"/><line x1="144" y1="44" x2="144" y2="96"/>
+          </g>
+          <rect x="0" y="26" width="156" height="18" rx="2" fill="var(--ink)" />
+          <text x="170" y="16" class="svg-label">short pins</text>
+          <text x="170" y="42" class="svg-label">black plastic</text>
+          <text x="170" y="76" class="svg-label">long pins</text>
+          <text x="78" y="130" class="svg-label" text-anchor="middle" font-weight="700">HEADER</text>
+          <text x="78" y="146" class="svg-label svg-muted" text-anchor="middle">7 metal legs</text>
+          <text x="78" y="162" class="svg-label svg-muted" text-anchor="middle">snapped off the long strip</text>
+        </g>
+
+        <!-- breadboard top view -->
+        <g transform="translate(500,40)">
+          <rect x="0" y="0" width="170" height="190" rx="6" fill="var(--board-blue)" />
+          <rect x="0" y="86" width="170" height="18" fill="var(--board-blue-deep)" />
+          <g fill="var(--board-blue-deep)">
+            <!-- top half: 5 columns x 4 rows visible -->
+            <g id="bbrow"><circle cx="30" cy="20" r="4"/><circle cx="58" cy="20" r="4"/><circle cx="86" cy="20" r="4"/><circle cx="114" cy="20" r="4"/><circle cx="142" cy="20" r="4"/></g>
+            <use href="#bbrow" y="22"/><use href="#bbrow" y="44"/><use href="#bbrow" y="66"/>
+            <use href="#bbrow" y="102"/><use href="#bbrow" y="124"/><use href="#bbrow" y="146"/><use href="#bbrow" y="168"/>
+          </g>
+          <!-- highlighted connected row -->
+          <rect x="18" y="52" width="136" height="24" rx="12" fill="none" stroke="var(--gold)" stroke-width="2.5"/>
+          <line x1="30" y1="64" x2="142" y2="64" stroke="var(--gold)" stroke-width="2" stroke-dasharray="3 3"/>
+          <text x="85" y="220" class="svg-label" text-anchor="middle" font-weight="700">BREADBOARD</text>
+          <text x="85" y="236" class="svg-label svg-muted" text-anchor="middle">each row of 5 holes</text>
+          <text x="85" y="252" class="svg-label svg-muted" text-anchor="middle">is wired together inside</text>
+        </g>
+      </svg>
+      <figcaption>Push two things into the same row of the breadboard and they're connected. The header gives the XIAO legs long enough to reach into those rows.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="step">Step 2 · Snap the headers</div>
+    <h2>Break off two pieces of 7</h2>
+    <figure>
+      <svg viewBox="0 0 700 120" role="img" aria-label="A long header strip with a bend line after the seventh pin, snapping into a 7-pin piece and the rest of the strip." xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(20,30)">
+          <g stroke="var(--solder)" stroke-width="5" stroke-linecap="round">
+            <line x1="12" y1="0" x2="12" y2="20"/><line x1="34" y1="0" x2="34" y2="20"/><line x1="56" y1="0" x2="56" y2="20"/><line x1="78" y1="0" x2="78" y2="20"/><line x1="100" y1="0" x2="100" y2="20"/><line x1="122" y1="0" x2="122" y2="20"/><line x1="144" y1="0" x2="144" y2="20"/>
+            <line x1="12" y1="38" x2="12" y2="70"/><line x1="34" y1="38" x2="34" y2="70"/><line x1="56" y1="38" x2="56" y2="70"/><line x1="78" y1="38" x2="78" y2="70"/><line x1="100" y1="38" x2="100" y2="70"/><line x1="122" y1="38" x2="122" y2="70"/><line x1="144" y1="38" x2="144" y2="70"/>
+          </g>
+          <rect x="0" y="20" width="156" height="18" rx="2" fill="var(--ink)" />
+          <g class="svg-mono" text-anchor="middle"><text x="12" y="88">1</text><text x="34" y="88">2</text><text x="56" y="88">3</text><text x="78" y="88">4</text><text x="100" y="88">5</text><text x="122" y="88">6</text><text x="144" y="88">7</text></g>
+        </g>
+        <!-- snap gap -->
+        <g transform="translate(176,30)">
+          <line x1="8" y1="-12" x2="8" y2="84" stroke="var(--hot)" stroke-width="2" stroke-dasharray="4 4"/>
+          <text x="8" y="-18" class="svg-label svg-hot" text-anchor="middle" font-weight="700">bend here</text>
+        </g>
+        <g transform="translate(200,30)" opacity="0.55">
+          <g stroke="var(--solder)" stroke-width="5" stroke-linecap="round">
+            <line x1="12" y1="0" x2="12" y2="20"/><line x1="34" y1="0" x2="34" y2="20"/><line x1="56" y1="0" x2="56" y2="20"/><line x1="78" y1="0" x2="78" y2="20"/><line x1="100" y1="0" x2="100" y2="20"/><line x1="122" y1="0" x2="122" y2="20"/><line x1="144" y1="0" x2="144" y2="20"/><line x1="166" y1="0" x2="166" y2="20"/><line x1="188" y1="0" x2="188" y2="20"/><line x1="210" y1="0" x2="210" y2="20"/><line x1="232" y1="0" x2="232" y2="20"/>
+            <line x1="12" y1="38" x2="12" y2="70"/><line x1="34" y1="38" x2="34" y2="70"/><line x1="56" y1="38" x2="56" y2="70"/><line x1="78" y1="38" x2="78" y2="70"/><line x1="100" y1="38" x2="100" y2="70"/><line x1="122" y1="38" x2="122" y2="70"/><line x1="144" y1="38" x2="144" y2="70"/><line x1="166" y1="38" x2="166" y2="70"/><line x1="188" y1="38" x2="188" y2="70"/><line x1="210" y1="38" x2="210" y2="70"/><line x1="232" y1="38" x2="232" y2="70"/>
+          </g>
+          <rect x="0" y="20" width="244" height="18" rx="2" fill="var(--ink)" />
+          <text x="122" y="88" class="svg-label svg-muted" text-anchor="middle">rest of the strip, keep for later</text>
+        </g>
+        <text x="600" y="66" class="svg-label" text-anchor="middle">Do this twice.</text>
+        <text x="600" y="84" class="svg-label svg-muted" text-anchor="middle">You need 2 pieces of 7.</text>
+      </svg>
+      <figcaption>Hold the strip either side of the gap after pin 7 and bend. It snaps like a chocolate bar. Make two.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="step">Step 3 · Stack them</div>
+    <h2>Both headers go in the breadboard. The XIAO sits on top.</h2>
+    <figure>
+      <svg viewBox="0 0 700 260" role="img" aria-label="Side view: breadboard at the bottom, two header pieces pushed into it long pins down, the XIAO resting on their plastic with the short pins poking up through its holes. One header on each side." xmlns="http://www.w3.org/2000/svg">
+        <!-- breadboard slab -->
+        <rect x="60" y="170" width="580" height="60" rx="6" fill="var(--board-blue)" />
+        <g fill="var(--board-blue-deep)">
+          <rect x="120" y="170" width="10" height="46"/><rect x="580" y="170" width="10" height="46"/>
+          <rect x="200" y="170" width="10" height="46" opacity="0.5"/><rect x="280" y="170" width="10" height="46" opacity="0.5"/><rect x="360" y="170" width="10" height="46" opacity="0.5"/><rect x="440" y="170" width="10" height="46" opacity="0.5"/><rect x="520" y="170" width="10" height="46" opacity="0.5"/>
+        </g>
+        <!-- header left -->
+        <g>
+          <line x1="125" y1="120" x2="125" y2="212" stroke="var(--solder)" stroke-width="6" stroke-linecap="round"/>
+          <rect x="105" y="148" width="40" height="22" rx="2" fill="var(--ink)"/>
+          <line x1="125" y1="96" x2="125" y2="150" stroke="var(--solder)" stroke-width="6" stroke-linecap="round"/>
+        </g>
+        <!-- header right -->
+        <g>
+          <line x1="585" y1="120" x2="585" y2="212" stroke="var(--solder)" stroke-width="6" stroke-linecap="round"/>
+          <rect x="565" y="148" width="40" height="22" rx="2" fill="var(--ink)"/>
+          <line x1="585" y1="96" x2="585" y2="150" stroke="var(--solder)" stroke-width="6" stroke-linecap="round"/>
+        </g>
+        <!-- XIAO slab -->
+        <rect x="95" y="128" width="520" height="20" rx="3" fill="var(--pcb)"/>
+        <rect x="112" y="128" width="26" height="20" fill="var(--gold)" opacity="0.9"/>
+        <rect x="572" y="128" width="26" height="20" fill="var(--gold)" opacity="0.9"/>
+        <rect x="200" y="106" width="310" height="22" rx="3" fill="var(--pcb-deep)"/>
+        <!-- pin tips above -->
+        <circle cx="125" cy="98" r="5" fill="var(--solder-hi)"/>
+        <circle cx="585" cy="98" r="5" fill="var(--solder-hi)"/>
+        <!-- labels -->
+        <text x="355" y="96" class="svg-label" text-anchor="middle">XIAO, chip side up</text>
+        <text x="125" y="70" class="svg-label" text-anchor="middle">pin tip pokes</text>
+        <text x="125" y="84" class="svg-label" text-anchor="middle">up through hole</text>
+        <text x="585" y="70" class="svg-label" text-anchor="middle">pin tip pokes</text>
+        <text x="585" y="84" class="svg-label" text-anchor="middle">up through hole</text>
+        <text x="350" y="255" class="svg-label" text-anchor="middle">breadboard (holds everything still)</text>
+        <text x="50" y="164" class="svg-label" text-anchor="end">header 1</text>
+        <text x="660" y="164" class="svg-label" text-anchor="start">header 2</text>
+        <text x="30" y="40" class="svg-label svg-hot" font-weight="700">Side view. Long pins down, short pins up. One header under each edge.</text>
+      </svg>
+      <figcaption>Why both: A0 is on one edge and GND and 3V3 are on the other, so both edges need legs. Also the board can't stand on one row.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 700 240" role="img" aria-label="Top view: the XIAO on the breadboard, each of its 14 holes with a pin tip showing, the two header rows sitting in two breadboard rows the width of the XIAO apart." xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="20" width="620" height="200" rx="6" fill="var(--board-blue)" />
+        <g fill="var(--board-blue-deep)" opacity="0.7">
+          <g id="tvcol"><circle cx="70" cy="42" r="3.5"/><circle cx="70" cy="64" r="3.5"/><circle cx="70" cy="86" r="3.5"/><circle cx="70" cy="108" r="3.5"/><circle cx="70" cy="130" r="3.5"/><circle cx="70" cy="152" r="3.5"/><circle cx="70" cy="174" r="3.5"/><circle cx="70" cy="196" r="3.5"/></g>
+          <use href="#tvcol" x="22"/><use href="#tvcol" x="44"/><use href="#tvcol" x="66"/><use href="#tvcol" x="88"/><use href="#tvcol" x="110"/><use href="#tvcol" x="132"/><use href="#tvcol" x="154"/><use href="#tvcol" x="176"/><use href="#tvcol" x="198"/><use href="#tvcol" x="220"/><use href="#tvcol" x="242"/><use href="#tvcol" x="264"/><use href="#tvcol" x="286"/><use href="#tvcol" x="308"/><use href="#tvcol" x="330"/><use href="#tvcol" x="352"/><use href="#tvcol" x="374"/><use href="#tvcol" x="396"/><use href="#tvcol" x="418"/><use href="#tvcol" x="440"/><use href="#tvcol" x="462"/><use href="#tvcol" x="484"/><use href="#tvcol" x="506"/><use href="#tvcol" x="528"/><use href="#tvcol" x="550"/>
+        </g>
+        <!-- XIAO on top, USB pointing left (away) -->
+        <g transform="translate(224,44)">
+          <rect x="0" y="0" width="200" height="152" rx="10" fill="var(--pcb)"/>
+          <rect x="-12" y="52" width="24" height="48" rx="4" fill="var(--solder)"/>
+          <rect x="50" y="30" width="110" height="92" rx="4" fill="var(--pcb-deep)"/>
+          <g fill="var(--gold)">
+            <circle cx="34" cy="20" r="7"/><circle cx="56" cy="20" r="7"/><circle cx="78" cy="20" r="7"/><circle cx="100" cy="20" r="7"/><circle cx="122" cy="20" r="7"/><circle cx="144" cy="20" r="7"/><circle cx="166" cy="20" r="7"/>
+            <circle cx="34" cy="132" r="7"/><circle cx="56" cy="132" r="7"/><circle cx="78" cy="132" r="7"/><circle cx="100" cy="132" r="7"/><circle cx="122" cy="132" r="7"/><circle cx="144" cy="132" r="7"/><circle cx="166" cy="132" r="7"/>
+          </g>
+          <g fill="var(--solder-hi)">
+            <circle cx="34" cy="20" r="3"/><circle cx="56" cy="20" r="3"/><circle cx="78" cy="20" r="3"/><circle cx="100" cy="20" r="3"/><circle cx="122" cy="20" r="3"/><circle cx="144" cy="20" r="3"/><circle cx="166" cy="20" r="3"/>
+            <circle cx="34" cy="132" r="3"/><circle cx="56" cy="132" r="3"/><circle cx="78" cy="132" r="3"/><circle cx="100" cy="132" r="3"/><circle cx="122" cy="132" r="3"/><circle cx="144" cy="132" r="3"/><circle cx="166" cy="132" r="3"/>
+          </g>
+        </g>
+        <text x="600" y="60" class="svg-label" text-anchor="middle" fill="var(--solder-hi)">← USB points</text>
+        <text x="600" y="76" class="svg-label" text-anchor="middle" fill="var(--solder-hi)">away from you</text>
+        <text x="324" y="34" class="svg-label" text-anchor="middle" fill="var(--solder-hi)">silver dot in every hole = pin tip showing</text>
+      </svg>
+      <figcaption>From above, every one of the 14 gold rings should have a silver pin tip in the middle. If a ring is empty, that header isn't under it.</figcaption>
+    </figure>
+    <div class="callout stop"><strong>Check:</strong> press down on the XIAO. It should sit flat and not rock. If it rocks, one header isn't pushed fully into the breadboard.</div>
+  </section>
+
+  <section>
+    <div class="step">Step 4 · The one move you repeat 14 times</div>
+    <h2>Soldering is: hot pen touches pin, feed in wire, pull away</h2>
+    <figure>
+      <svg viewBox="0 0 700 250" role="img" aria-label="Close-up side view of one pin through the XIAO board. The iron tip comes in from the left touching both the pin and the gold ring; the solder wire comes in from the right to the same spot. Result: a small shiny cone hugging the pin." xmlns="http://www.w3.org/2000/svg">
+        <!-- board cross-section -->
+        <rect x="160" y="150" width="380" height="18" rx="2" fill="var(--pcb)"/>
+        <rect x="330" y="150" width="40" height="18" fill="var(--gold)"/>
+        <!-- pin -->
+        <line x1="350" y1="60" x2="350" y2="220" stroke="var(--solder)" stroke-width="8" stroke-linecap="round"/>
+        <!-- iron from left, 45 deg -->
+        <g transform="translate(346,146) rotate(-135)">
+          <path d="M0 0 L14 -6 L14 6 Z" fill="var(--iron)"/>
+          <rect x="14" y="-7" width="50" height="14" fill="var(--iron)"/>
+          <rect x="64" y="-13" width="110" height="26" rx="8" fill="var(--ink)"/>
+        </g>
+        <!-- solder wire from right -->
+        <g transform="translate(356,146) rotate(-45)">
+          <line x1="8" y1="0" x2="190" y2="0" stroke="var(--solder)" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <!-- melt point -->
+        <circle cx="350" cy="148" r="9" fill="var(--hot)" opacity="0.85"/>
+        <!-- labels -->
+        <text x="120" y="60" class="svg-label" font-weight="700">1. Iron tip</text>
+        <text x="120" y="76" class="svg-label">touches the pin AND</text>
+        <text x="120" y="92" class="svg-label">the gold ring at once</text>
+        <text x="520" y="60" class="svg-label" text-anchor="end" font-weight="700">2. Solder wire</text>
+        <text x="520" y="76" class="svg-label" text-anchor="end">goes to that same</text>
+        <text x="520" y="92" class="svg-label" text-anchor="end">corner from the other side</text>
+        <text x="350" y="200" class="svg-label svg-hot" text-anchor="middle" font-weight="700">this corner is the whole job</text>
+        <text x="350" y="240" class="svg-label svg-muted" text-anchor="middle">Count: iron on (one), wire in (two), wire away, iron away. Done.</text>
+      </svg>
+      <figcaption>The iron heats the pin and ring. The wire melts against them and flows into the corner. Two to three seconds per pin.</figcaption>
+    </figure>
+
+    <figure>
+      <svg viewBox="0 0 700 200" role="img" aria-label="Three results side by side: a good joint is a small shiny cone hugging the pin; a cold joint is a dull ball sitting on top; a bridge is solder spilling across to the neighbor pin." xmlns="http://www.w3.org/2000/svg">
+        <!-- good -->
+        <g transform="translate(40,30)">
+          <rect x="0" y="90" width="160" height="14" rx="2" fill="var(--pcb)"/>
+          <rect x="62" y="90" width="36" height="14" fill="var(--gold)"/>
+          <line x1="80" y1="30" x2="80" y2="130" stroke="var(--solder)" stroke-width="7" stroke-linecap="round"/>
+          <path d="M56 90 Q80 86 80 60 Q80 86 104 90 Z" fill="var(--solder-hi)" stroke="var(--solder)" stroke-width="1.5"/>
+          <text x="80" y="20" class="svg-label" text-anchor="middle" font-weight="700" fill="var(--good)">GOOD</text>
+          <text x="80" y="150" class="svg-label" text-anchor="middle">small shiny cone</text>
+          <text x="80" y="166" class="svg-label svg-muted" text-anchor="middle">hugging the pin</text>
+        </g>
+        <!-- cold ball -->
+        <g transform="translate(270,30)">
+          <rect x="0" y="90" width="160" height="14" rx="2" fill="var(--pcb)"/>
+          <rect x="62" y="90" width="36" height="14" fill="var(--gold)"/>
+          <line x1="80" y1="30" x2="80" y2="130" stroke="var(--solder)" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="80" cy="74" r="16" fill="var(--solder)" opacity="0.8"/>
+          <text x="80" y="20" class="svg-label" text-anchor="middle" font-weight="700" fill="var(--bad)">FIX</text>
+          <text x="80" y="150" class="svg-label" text-anchor="middle">dull ball sitting on top</text>
+          <text x="80" y="166" class="svg-label svg-muted" text-anchor="middle">touch iron 1 more second</text>
+        </g>
+        <!-- bridge -->
+        <g transform="translate(500,30)">
+          <rect x="0" y="90" width="160" height="14" rx="2" fill="var(--pcb)"/>
+          <rect x="42" y="90" width="36" height="14" fill="var(--gold)"/>
+          <rect x="84" y="90" width="36" height="14" fill="var(--gold)"/>
+          <line x1="60" y1="30" x2="60" y2="130" stroke="var(--solder)" stroke-width="7" stroke-linecap="round"/>
+          <line x1="102" y1="30" x2="102" y2="130" stroke="var(--solder)" stroke-width="7" stroke-linecap="round"/>
+          <path d="M36 90 Q60 70 81 78 Q102 70 126 90 Z" fill="var(--solder-hi)" stroke="var(--solder)" stroke-width="1.5"/>
+          <text x="80" y="20" class="svg-label" text-anchor="middle" font-weight="700" fill="var(--bad)">FIX</text>
+          <text x="80" y="150" class="svg-label" text-anchor="middle">spilled onto the neighbor</text>
+          <text x="80" y="166" class="svg-label svg-muted" text-anchor="middle">stop, send a photo</text>
+        </g>
+      </svg>
+      <figcaption>What you're aiming for, and the two things that go wrong. Both are fixable.</figcaption>
+    </figure>
+
+    <div class="callout"><strong>Before heat:</strong> clear the table. Put a ceramic plate next to you for the iron to rest on. Plug the Pinecil into the Mac charger, press the button nearest the tip, set it to about 330. Only ever hold the black handle.</div>
+  </section>
+
+  <section>
+    <div class="step">Step 5 · Order</div>
+    <h2>Two corners first, then stop and send a photo</h2>
+    <figure>
+      <svg viewBox="0 0 700 220" role="img" aria-label="Top view of the XIAO's 14 pins. Two diagonal corner pins are marked 1 and 2 to solder first. The other 12 are marked 'after the photo'." xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(200,30)">
+          <rect x="0" y="0" width="300" height="160" rx="10" fill="var(--pcb)"/>
+          <rect x="-14" y="56" width="26" height="48" rx="4" fill="var(--solder)"/>
+          <rect x="70" y="30" width="160" height="100" rx="4" fill="var(--pcb-deep)"/>
+          <g fill="var(--gold)">
+            <circle cx="50" cy="22" r="9"/><circle cx="84" cy="22" r="9"/><circle cx="118" cy="22" r="9"/><circle cx="152" cy="22" r="9"/><circle cx="186" cy="22" r="9"/><circle cx="220" cy="22" r="9"/><circle cx="254" cy="22" r="9"/>
+            <circle cx="50" cy="138" r="9"/><circle cx="84" cy="138" r="9"/><circle cx="118" cy="138" r="9"/><circle cx="152" cy="138" r="9"/><circle cx="186" cy="138" r="9"/><circle cx="220" cy="138" r="9"/><circle cx="254" cy="138" r="9"/>
+          </g>
+          <circle cx="50" cy="22" r="14" fill="none" stroke="var(--hot)" stroke-width="3"/>
+          <circle cx="254" cy="138" r="14" fill="none" stroke="var(--hot)" stroke-width="3"/>
+          <text x="50" y="-12" class="svg-label svg-hot" text-anchor="middle" font-weight="700">1st</text>
+          <text x="254" y="176" class="svg-label svg-hot" text-anchor="middle" font-weight="700">2nd</text>
+        </g>
+        <text x="60" y="110" class="svg-label" text-anchor="middle">opposite</text>
+        <text x="60" y="126" class="svg-label" text-anchor="middle">corners</text>
+        <text x="640" y="102" class="svg-label" text-anchor="middle">the other 12:</text>
+        <text x="640" y="118" class="svg-label" text-anchor="middle">after I check</text>
+        <text x="640" y="134" class="svg-label" text-anchor="middle">your photo</text>
+      </svg>
+      <figcaption>Two pins locks the board flat and lets us catch problems early. Then the rest, skipping around rather than going neighbor to neighbor.</figcaption>
+    </figure>
+    <ol>
+      <li>Solder the two circled corner pins.</li>
+      <li>Put the iron on the plate. Send a photo.</li>
+      <li>When I say go, do the remaining 12.</li>
+      <li>Hold the Pinecil button to turn it off. Leave it 5 minutes to cool.</li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="step">Step 6 · Seat it for real</div>
+    <h2>Pull it out, push it back in across the gap</h2>
+    <p>The gap down the middle of the breadboard is a wall. Rows on one side don't touch rows on the other. The XIAO needs to sit across that wall so its two rows of legs land on different sides. Otherwise the left legs and right legs share rows and everything is shorted together.</p>
+    <figure>
+      <svg viewBox="0 0 700 260" role="img" aria-label="Top view of the breadboard with the center gap running left to right. The XIAO sits across the gap so one row of legs is above it and the other row below it, with a few free holes in line with every leg." xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="20" width="620" height="220" rx="6" fill="var(--board-blue)" />
+        <rect x="40" y="120" width="620" height="20" fill="var(--board-blue-deep)" />
+        <g fill="var(--board-blue-deep)" opacity="0.7">
+          <g id="s6col"><circle cx="70" cy="40" r="3.5"/><circle cx="70" cy="60" r="3.5"/><circle cx="70" cy="80" r="3.5"/><circle cx="70" cy="100" r="3.5"/><circle cx="70" cy="160" r="3.5"/><circle cx="70" cy="180" r="3.5"/><circle cx="70" cy="200" r="3.5"/><circle cx="70" cy="220" r="3.5"/></g>
+          <use href="#s6col" x="22"/><use href="#s6col" x="44"/><use href="#s6col" x="66"/><use href="#s6col" x="88"/><use href="#s6col" x="110"/><use href="#s6col" x="132"/><use href="#s6col" x="154"/><use href="#s6col" x="176"/><use href="#s6col" x="198"/><use href="#s6col" x="220"/><use href="#s6col" x="242"/><use href="#s6col" x="264"/><use href="#s6col" x="286"/><use href="#s6col" x="308"/><use href="#s6col" x="330"/><use href="#s6col" x="352"/><use href="#s6col" x="374"/><use href="#s6col" x="396"/><use href="#s6col" x="418"/><use href="#s6col" x="440"/><use href="#s6col" x="462"/><use href="#s6col" x="484"/><use href="#s6col" x="506"/><use href="#s6col" x="528"/><use href="#s6col" x="550"/>
+        </g>
+        <g transform="translate(224,58)">
+          <rect x="0" y="0" width="200" height="144" rx="10" fill="var(--pcb)"/>
+          <rect x="-12" y="48" width="24" height="48" rx="4" fill="var(--solder)"/>
+          <rect x="50" y="28" width="110" height="88" rx="4" fill="var(--pcb-deep)"/>
+          <g fill="var(--solder-hi)">
+            <circle cx="34" cy="22" r="6"/><circle cx="56" cy="22" r="6"/><circle cx="78" cy="22" r="6"/><circle cx="100" cy="22" r="6"/><circle cx="122" cy="22" r="6"/><circle cx="144" cy="22" r="6"/><circle cx="166" cy="22" r="6"/>
+            <circle cx="34" cy="122" r="6"/><circle cx="56" cy="122" r="6"/><circle cx="78" cy="122" r="6"/><circle cx="100" cy="122" r="6"/><circle cx="122" cy="122" r="6"/><circle cx="144" cy="122" r="6"/><circle cx="166" cy="122" r="6"/>
+          </g>
+        </g>
+        <text x="600" y="134" class="svg-label" text-anchor="middle" fill="var(--solder-hi)" font-weight="700">the gap</text>
+        <text x="130" y="134" class="svg-label" text-anchor="middle" fill="var(--solder-hi)" font-weight="700">the gap</text>
+        <text x="350" y="48" class="svg-label" text-anchor="middle" fill="var(--solder-hi)">free holes above each top leg</text>
+        <text x="350" y="228" class="svg-label" text-anchor="middle" fill="var(--solder-hi)">free holes below each bottom leg</text>
+      </svg>
+      <figcaption>Top legs on one side of the gap, bottom legs on the other. Which exact rows doesn't matter, only that the gap is between them. Push down firmly until it stops.</figcaption>
+    </figure>
+    <div class="callout stop"><strong>Check:</strong> every leg should have at least one empty hole in line with it, on the outside. That empty hole is where a wire goes to reach that leg.</div>
+  </section>
+
+  <section>
+    <div class="step">Step 7 · Find the three legs you need</div>
+    <h2>A0, GND, 3V3. Ignore the other 11.</h2>
+    <p>The names are printed on the XIAO next to each hole, in tiny letters. Hold it with the USB port pointing away from you and use this map.</p>
+    <figure>
+      <svg viewBox="0 0 700 560" role="img" aria-label="Drawing of the user's own board photo: breadboard with the gap running top to bottom, XIAO in the middle with USB at the top. Left column of legs from the top: A0 (circled), D1 to D6. Right column from the top: 5V, GND (circled), 3V3 (circled), D10 to D7. Arrows show the free holes to the left of A0 and to the right of GND and 3V3 where wires go." xmlns="http://www.w3.org/2000/svg">
+        <!-- breadboard, gap vertical like the photo -->
+        <rect x="150" y="20" width="400" height="520" rx="8" fill="var(--board-blue)"/>
+        <rect x="340" y="20" width="20" height="520" fill="var(--board-blue-deep)"/>
+        <g fill="var(--board-blue-deep)" opacity="0.7">
+          <g id="yb"><circle cx="180" cy="44" r="4"/><circle cx="210" cy="44" r="4"/><circle cx="240" cy="44" r="4"/><circle cx="270" cy="44" r="4"/><circle cx="300" cy="44" r="4"/><circle cx="400" cy="44" r="4"/><circle cx="430" cy="44" r="4"/><circle cx="460" cy="44" r="4"/><circle cx="490" cy="44" r="4"/><circle cx="520" cy="44" r="4"/></g>
+          <use href="#yb" y="30"/><use href="#yb" y="60"/><use href="#yb" y="90"/><use href="#yb" y="120"/><use href="#yb" y="150"/><use href="#yb" y="180"/><use href="#yb" y="210"/><use href="#yb" y="240"/><use href="#yb" y="270"/><use href="#yb" y="300"/><use href="#yb" y="330"/><use href="#yb" y="360"/><use href="#yb" y="390"/><use href="#yb" y="420"/><use href="#yb" y="450"/><use href="#yb" y="480"/>
+        </g>
+        <!-- the three rows, highlighted across their whole width -->
+        <rect x="166" y="150" width="148" height="28" rx="14" fill="none" stroke="var(--hot)" stroke-width="3"/>
+        <rect x="386" y="180" width="148" height="28" rx="14" fill="none" stroke="var(--hot)" stroke-width="3"/>
+        <rect x="386" y="210" width="148" height="28" rx="14" fill="none" stroke="var(--hot)" stroke-width="3"/>
+        <!-- XIAO, USB up -->
+        <g transform="translate(250,120)">
+          <rect x="0" y="0" width="200" height="260" rx="12" fill="var(--pcb)"/>
+          <rect x="72" y="-10" width="56" height="30" rx="5" fill="var(--solder)"/>
+          <rect x="44" y="70" width="112" height="120" rx="4" fill="var(--pcb-deep)"/>
+          <text x="100" y="140" class="svg-label" text-anchor="middle" fill="var(--solder-hi)">seeed studio</text>
+          <g fill="var(--gold)">
+            <circle cx="20" cy="44" r="9"/><circle cx="20" cy="74" r="9"/><circle cx="20" cy="104" r="9"/><circle cx="20" cy="134" r="9"/><circle cx="20" cy="164" r="9"/><circle cx="20" cy="194" r="9"/><circle cx="20" cy="224" r="9"/>
+            <circle cx="180" cy="44" r="9"/><circle cx="180" cy="74" r="9"/><circle cx="180" cy="104" r="9"/><circle cx="180" cy="134" r="9"/><circle cx="180" cy="164" r="9"/><circle cx="180" cy="194" r="9"/><circle cx="180" cy="224" r="9"/>
+          </g>
+          <g fill="var(--solder-hi)">
+            <circle cx="20" cy="44" r="4"/><circle cx="20" cy="74" r="4"/><circle cx="20" cy="104" r="4"/><circle cx="20" cy="134" r="4"/><circle cx="20" cy="164" r="4"/><circle cx="20" cy="194" r="4"/><circle cx="20" cy="224" r="4"/>
+            <circle cx="180" cy="44" r="4"/><circle cx="180" cy="74" r="4"/><circle cx="180" cy="104" r="4"/><circle cx="180" cy="134" r="4"/><circle cx="180" cy="164" r="4"/><circle cx="180" cy="194" r="4"/><circle cx="180" cy="224" r="4"/>
+          </g>
+          <!-- little printed words you can see in the photo -->
+          <text x="34" y="30" class="svg-mono" font-size="9" fill="var(--solder-hi)">RST</text>
+          <text x="34" y="228" class="svg-mono" font-size="9" fill="var(--solder-hi)">TX</text>
+          <text x="166" y="228" class="svg-mono" font-size="9" fill="var(--solder-hi)" text-anchor="end">RX</text>
+          <text x="166" y="30" class="svg-mono" font-size="9" fill="var(--solder-hi)" text-anchor="end">5V</text>
+        </g>
+        <!-- leg names, left -->
+        <g class="svg-mono" text-anchor="end">
+          <text x="140" y="168" class="svg-mono svg-hot" font-weight="700" font-size="14">A0</text>
+          <text x="140" y="198" class="svg-mono svg-muted">D1</text><text x="140" y="228" class="svg-mono svg-muted">D2</text><text x="140" y="258" class="svg-mono svg-muted">D3</text><text x="140" y="288" class="svg-mono svg-muted">D4</text><text x="140" y="318" class="svg-mono svg-muted">D5</text><text x="140" y="348" class="svg-mono svg-muted">D6</text>
+        </g>
+        <!-- leg names, right -->
+        <g class="svg-mono" text-anchor="start">
+          <text x="560" y="168" class="svg-mono svg-muted">5V</text>
+          <text x="560" y="198" class="svg-mono svg-hot" font-weight="700" font-size="14">GND</text>
+          <text x="560" y="228" class="svg-mono svg-hot" font-weight="700" font-size="14">3V3</text>
+          <text x="560" y="258" class="svg-mono svg-muted">D10</text><text x="560" y="288" class="svg-mono svg-muted">D9</text><text x="560" y="318" class="svg-mono svg-muted">D8</text><text x="560" y="348" class="svg-mono svg-muted">D7</text>
+        </g>
+        <!-- callouts for free holes -->
+        <text x="60" y="120" class="svg-label" font-weight="700">A0 wire goes in</text>
+        <text x="60" y="136" class="svg-label">one of these holes</text>
+        <path d="M120 140 L200 158" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        <text x="620" y="110" class="svg-label" font-weight="700" text-anchor="end">GND and 3V3 wires</text>
+        <text x="620" y="126" class="svg-label" text-anchor="end">go in these holes</text>
+        <path d="M560 130 L500 190" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        <path d="M560 130 L500 220" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        <text x="350" y="500" class="svg-label" text-anchor="middle" fill="var(--solder-hi)">the gap, running top to bottom in your photo</text>
+        <text x="350" y="16" class="svg-label svg-muted" text-anchor="middle">USB port at the top, same as your photo</text>
+      </svg>
+      <figcaption>Your board, as photographed. Each red oval is one row of connected holes. A0's row reaches out to the left. GND's and 3V3's rows reach out to the right. A wire pushed into any empty hole inside a red oval is connected to that leg.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 700 300" role="img" aria-label="Map of the XIAO with the USB port at the top. Left column from the top: A0, D1, D2, D3, D4, D5, D6. Right column from the top: 5V, GND, 3V3, D10, D9, D8, D7. A0, GND, and 3V3 are highlighted." xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(250,30)">
+          <rect x="0" y="0" width="200" height="250" rx="12" fill="var(--pcb)"/>
+          <rect x="72" y="-10" width="56" height="26" rx="4" fill="var(--solder)"/>
+          <rect x="40" y="60" width="120" height="140" rx="4" fill="var(--pcb-deep)"/>
+          <g fill="var(--gold)">
+            <circle cx="22" cy="40" r="8"/><circle cx="22" cy="72" r="8"/><circle cx="22" cy="104" r="8"/><circle cx="22" cy="136" r="8"/><circle cx="22" cy="168" r="8"/><circle cx="22" cy="200" r="8"/><circle cx="22" cy="232" r="8"/>
+            <circle cx="178" cy="40" r="8"/><circle cx="178" cy="72" r="8"/><circle cx="178" cy="104" r="8"/><circle cx="178" cy="136" r="8"/><circle cx="178" cy="168" r="8"/><circle cx="178" cy="200" r="8"/><circle cx="178" cy="232" r="8"/>
+          </g>
+          <circle cx="22" cy="40" r="14" fill="none" stroke="var(--hot)" stroke-width="3"/>
+          <circle cx="178" cy="72" r="14" fill="none" stroke="var(--hot)" stroke-width="3"/>
+          <circle cx="178" cy="104" r="14" fill="none" stroke="var(--hot)" stroke-width="3"/>
+          <text x="100" y="-18" class="svg-label svg-muted" text-anchor="middle">USB, pointing away from you</text>
+        </g>
+        <g class="svg-mono" text-anchor="end">
+          <text x="240" y="74" class="svg-mono svg-hot" font-weight="700">A0  ← top left</text>
+          <text x="240" y="106" class="svg-mono svg-muted">D1</text><text x="240" y="138" class="svg-mono svg-muted">D2</text><text x="240" y="170" class="svg-mono svg-muted">D3</text><text x="240" y="202" class="svg-mono svg-muted">D4</text><text x="240" y="234" class="svg-mono svg-muted">D5</text><text x="240" y="266" class="svg-mono svg-muted">D6</text>
+        </g>
+        <g class="svg-mono" text-anchor="start">
+          <text x="460" y="74" class="svg-mono svg-muted">5V  (don't use)</text>
+          <text x="460" y="106" class="svg-mono svg-hot" font-weight="700">GND ← 2nd from top, right</text>
+          <text x="460" y="138" class="svg-mono svg-hot" font-weight="700">3V3 ← 3rd from top, right</text>
+          <text x="460" y="170" class="svg-mono svg-muted">D10</text><text x="460" y="202" class="svg-mono svg-muted">D9</text><text x="460" y="234" class="svg-mono svg-muted">D8</text><text x="460" y="266" class="svg-mono svg-muted">D7</text>
+        </g>
+      </svg>
+      <figcaption>3V3 pushes a small voltage out. A0 is the leg that measures a voltage coming back in. GND is the return path. Those three make the circuit. Never use 5V for this.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="step">Step 8 · Wire the cord</div>
+    <h2>Three wires, two clips, one resistor</h2>
+    <p>Rubber can't be pushed into a breadboard, so the cord connects through alligator clips. Everything else is jumper wires pushed into holes.</p>
+    <figure>
+      <svg viewBox="0 0 700 330" role="img" aria-label="Wiring diagram. From the 3V3 leg a jumper wire goes to an alligator clip on one end of the rubber cord. From the A0 leg a jumper wire goes to an alligator clip on the other end of the cord. A resistor runs from the A0 row to the GND row on the breadboard." xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6"><circle cx="5" cy="5" r="4" fill="currentColor"/></marker></defs>
+        <!-- breadboard -->
+        <rect x="20" y="20" width="300" height="290" rx="6" fill="var(--board-blue)" />
+        <rect x="150" y="20" width="20" height="290" fill="var(--board-blue-deep)" />
+        <!-- XIAO across the gap, USB pointing up -->
+        <g transform="translate(90,60)">
+          <rect x="0" y="0" width="140" height="200" rx="10" fill="var(--pcb)"/>
+          <rect x="52" y="-8" width="36" height="20" rx="4" fill="var(--solder)"/>
+          <rect x="30" y="40" width="80" height="120" rx="4" fill="var(--pcb-deep)"/>
+          <g fill="var(--solder-hi)">
+            <circle cx="16" cy="30" r="5"/><circle cx="16" cy="56" r="5"/><circle cx="16" cy="82" r="5"/><circle cx="16" cy="108" r="5"/><circle cx="16" cy="134" r="5"/><circle cx="16" cy="160" r="5"/><circle cx="16" cy="186" r="5"/>
+            <circle cx="124" cy="30" r="5"/><circle cx="124" cy="56" r="5"/><circle cx="124" cy="82" r="5"/><circle cx="124" cy="108" r="5"/><circle cx="124" cy="134" r="5"/><circle cx="124" cy="160" r="5"/><circle cx="124" cy="186" r="5"/>
+          </g>
+          <text x="16" y="18" class="svg-mono" text-anchor="middle" fill="var(--solder-hi)">A0</text>
+          <text x="124" y="46" class="svg-mono" text-anchor="end" fill="var(--solder-hi)" transform="translate(-10,0)">GND</text>
+          <text x="124" y="72" class="svg-mono" text-anchor="end" fill="var(--solder-hi)" transform="translate(-10,0)">3V3</text>
+        </g>
+        <!-- free holes in line with legs -->
+        <g fill="var(--board-blue-deep)"><circle cx="60" cy="90" r="4"/><circle cx="40" cy="90" r="4"/><circle cx="260" cy="116" r="4"/><circle cx="280" cy="116" r="4"/><circle cx="260" cy="142" r="4"/><circle cx="280" cy="142" r="4"/></g>
+        <!-- wire A0 -> out left then around top -->
+        <path d="M60 90 L60 40 L400 40 L400 120" fill="none" stroke="var(--hot)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- wire 3V3 -> out right -->
+        <path d="M280 142 L340 142 L340 260 L400 260" fill="none" stroke="var(--gold)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- resistor A0 row to GND row: goes from hole at 40,90 down around bottom to 260,116 -->
+        <path d="M40 90 L40 290 L230 290" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="200" y="280" width="60" height="20" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+        <g stroke-width="3"><line x1="212" y1="280" x2="212" y2="300" stroke="#8B5A2B"/><line x1="224" y1="280" x2="224" y2="300" stroke="#1E1D1A"/><line x1="236" y1="280" x2="236" y2="300" stroke="#E0532B"/><line x1="248" y1="280" x2="248" y2="300" stroke="#D4A72C"/></g>
+        <path d="M260 290 L300 290 L300 116 L260 116" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- clips + cord -->
+        <g transform="translate(400,120)">
+          <path d="M0 0 L0 30" stroke="var(--hot)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M-14 30 L14 30 L6 52 L-6 52 Z" fill="var(--iron)"/>
+        </g>
+        <g transform="translate(400,260)">
+          <path d="M0 0 L0 -30" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M-14 -30 L14 -30 L6 -52 L-6 -52 Z" fill="var(--iron)"/>
+        </g>
+        <path d="M400 172 L400 208" stroke="#2B2B2B" stroke-width="12" stroke-linecap="round"/>
+        <text x="425" y="196" class="svg-label" font-weight="700">rubber cord</text>
+        <text x="425" y="212" class="svg-label svg-muted">4 inches, clip to clip</text>
+        <text x="425" y="158" class="svg-label svg-muted">alligator clip bites</text>
+        <text x="425" y="172" class="svg-label svg-muted">the wire's metal end</text>
+        <text x="425" y="240" class="svg-label svg-muted">alligator clip</text>
+        <!-- wire labels -->
+        <text x="230" y="34" class="svg-label svg-hot" text-anchor="middle" font-weight="700">wire 1: from the A0 row</text>
+        <text x="345" y="200" class="svg-label" text-anchor="middle" fill="var(--gold)" font-weight="700" transform="rotate(-90 345 200)">wire 2: from the 3V3 row</text>
+        <text x="130" y="322" class="svg-label" text-anchor="middle" font-weight="700">10 kΩ resistor: A0 row to GND row</text>
+        <text x="560" y="300" class="svg-label" text-anchor="middle">No resistor?</text>
+        <text x="560" y="316" class="svg-label svg-muted" text-anchor="middle">use a 2nd 4 inch cord piece here</text>
+        <text x="560" y="330" class="svg-label svg-muted" text-anchor="middle">with two more clips + wires</text>
+      </svg>
+      <figcaption>Wire 1 leaves the A0 row and ends in a clip on one cord end. Wire 2 leaves the 3V3 row and ends in a clip on the other cord end. The resistor bridges the A0 row to the GND row.</figcaption>
+    </figure>
+    <ol>
+      <li>Push one end of a jumper wire into a free hole in line with the A0 leg. Leave the other end loose.</li>
+      <li>Push one end of a second jumper wire into a free hole in line with the 3V3 leg. Other end loose.</li>
+      <li>Cut a 4-inch piece of cord. Put an alligator clip on each end, the way you did for the meter.</li>
+      <li>Clip the A0 wire's loose end with cord clip 1. Clip the 3V3 wire's loose end with cord clip 2.</li>
+      <li>Resistor: one leg into a free hole in line with A0, the other leg into a free hole in line with GND. It has to reach across, so bend the legs. If you have no resistor, use a second cord piece with two more clips and two more wires, exactly like steps 1 to 4.</li>
+      <li>Look: no clip touching another clip, no bare metal touching bare metal except where you meant it.</li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="step">Step 9 · Plug in and read</div>
+    <h2>The numbers appear on the Mac</h2>
+    <p>Plug the XIAO into the Mac with the USB-C cable and tell me "ready". I upload the logging program from here. Then open Arduino IDE, go to Tools, then Serial Plotter, and set the speed in the corner to 115200. You'll see this:</p>
+    <figure>
+      <svg viewBox="0 0 700 260" role="img" aria-label="A live graph of the ohms reading over time. Flat around 720 at rest, rising to about 1400 while the cord is stretched, back down to 720 when let go." xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="700" height="260" rx="8" fill="var(--panel)"/>
+        <g stroke="var(--rule)" stroke-width="1"><line x1="70" y1="40" x2="670" y2="40"/><line x1="70" y1="100" x2="670" y2="100"/><line x1="70" y1="160" x2="670" y2="160"/><line x1="70" y1="220" x2="670" y2="220"/></g>
+        <g class="svg-mono svg-muted" text-anchor="end"><text x="60" y="44">1600</text><text x="60" y="104">1200</text><text x="60" y="164">800</text><text x="60" y="224">400</text></g>
+        <polyline points="70,232 150,231 200,232 240,230 260,200 280,140 300,118 340,112 380,116 400,120 420,150 440,200 460,224 500,230 560,231 620,232 670,231" fill="none" stroke="var(--hot)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+        <text x="160" y="250" class="svg-label" text-anchor="middle">at rest, ~720</text>
+        <text x="350" y="96" class="svg-label" text-anchor="middle">stretched, ~1400</text>
+        <text x="560" y="250" class="svg-label" text-anchor="middle">let go, back to ~720</text>
+        <text x="670" y="20" class="svg-mono svg-muted" text-anchor="end">ohms</text>
+      </svg>
+      <figcaption>The line is the cord's resistance, updated 20 times a second. Stretch the cord and it climbs. Let go and it settles back. That's the sensor talking to a computer.</figcaption>
+    </figure>
+    <p>If the line does something else, this is what it means:</p>
+    <ol>
+      <li><strong>Jumps around wildly, never settles.</strong> A0 isn't connected to anything. Check wire 1 is in a hole in line with the A0 leg, and that its clip is really biting the metal.</li>
+      <li><strong>Flat at -1.</strong> A0 is touching GND directly. A clip or resistor leg is in the wrong row.</li>
+      <li><strong>Flat near 0.</strong> A0 is touching 3V3 directly. The cord clips are probably touching each other.</li>
+      <li><strong>Reads but the number jumps when you touch a clip.</strong> Contact, not cord. Same lesson as the meter. Squeeze the clips on tighter.</li>
+    </ol>
+  </section>
+
+
+  <section id="first-reading">
+    <div class="step">Sept 4, 2026 · 11 pm · the first live reading</div>
+    <h2>Four pulls on the cord, seen by the computer</h2>
+    <p>Ninety seconds recorded at 20 readings per second, straight from the XIAO, with the cord clipped between 3V3 and A0 and a 10 kΩ resistor to GND. You pulled four times. Hover the line to read any moment.</p>
+    <figure class="chart">
+      <div class="chart-wrap">
+      <svg id="stretchchart" viewBox="0 0 760 340" role="img" aria-label="Line chart of cord resistance in ohms over 90 seconds. Flat near 780 ohms for 15 seconds, then four sharp plateaus near 1800 ohms each held about 4 seconds, dropping to about 1050 between them, then a slow decline from 1000 toward 900 ohms over the last 45 seconds." xmlns="http://www.w3.org/2000/svg">
+        <line x1="56" y1="272.0" x2="744" y2="272.0" stroke="var(--rule)" stroke-width="1"/><text x="48" y="276.0" class="svg-mono svg-muted" text-anchor="end">800</text><line x1="56" y1="216.0" x2="744" y2="216.0" stroke="var(--rule)" stroke-width="1"/><text x="48" y="220.0" class="svg-mono svg-muted" text-anchor="end">1200</text><line x1="56" y1="160.0" x2="744" y2="160.0" stroke="var(--rule)" stroke-width="1"/><text x="48" y="164.0" class="svg-mono svg-muted" text-anchor="end">1600</text><line x1="56" y1="104.0" x2="744" y2="104.0" stroke="var(--rule)" stroke-width="1"/><text x="48" y="108.0" class="svg-mono svg-muted" text-anchor="end">2000</text><line x1="56" y1="48.0" x2="744" y2="48.0" stroke="var(--rule)" stroke-width="1"/><text x="48" y="52.0" class="svg-mono svg-muted" text-anchor="end">2400</text>
+        <line x1="56" y1="300.0" x2="744" y2="300.0" stroke="var(--muted)" stroke-width="1"/>
+        <text x="56.0" y="318" class="svg-mono svg-muted" text-anchor="middle">0s</text><text x="170.7" y="318" class="svg-mono svg-muted" text-anchor="middle">15s</text><text x="285.3" y="318" class="svg-mono svg-muted" text-anchor="middle">30s</text><text x="400.0" y="318" class="svg-mono svg-muted" text-anchor="middle">45s</text><text x="514.7" y="318" class="svg-mono svg-muted" text-anchor="middle">60s</text><text x="629.3" y="318" class="svg-mono svg-muted" text-anchor="middle">75s</text><text x="744.0" y="318" class="svg-mono svg-muted" text-anchor="middle">90s</text>
+        <text x="56" y="12" class="svg-mono svg-muted">ohms</text>
+        <polyline points="56.0,274.4 56.8,273.8 57.5,274.0 58.3,274.4 59.1,275.1 59.8,273.7 60.6,273.8 61.4,274.0 62.1,274.7 62.9,274.0 63.6,274.1 64.4,274.2 65.2,274.7 65.9,273.4 66.7,274.2 67.5,274.7 68.2,273.7 69.0,274.2 69.8,273.5 70.5,274.5 71.3,274.1 72.1,274.7 72.8,274.5 73.6,274.7 74.3,275.5 75.1,274.4 75.9,275.1 76.6,274.1 77.4,274.2 78.2,274.9 78.9,274.4 79.7,274.4 80.5,274.4 81.2,274.9 82.0,275.5 82.8,274.1 83.5,274.4 84.3,274.7 85.0,274.9 85.8,275.4 86.6,274.9 87.3,274.4 88.1,275.6 88.9,274.7 89.6,274.8 90.4,275.6 91.2,275.5 91.9,275.9 92.7,274.8 93.5,275.4 94.2,274.7 95.0,275.5 95.8,275.8 96.5,275.5 97.3,275.1 98.0,275.1 98.8,274.7 99.6,275.1 100.3,274.9 101.1,275.5 101.9,275.4 102.6,274.2 103.4,275.5 104.2,274.9 104.9,275.5 105.7,276.2 106.5,274.4 107.2,275.4 108.0,274.8 108.7,275.1 109.5,275.2 110.3,274.9 111.0,274.8 111.8,274.8 112.6,275.5 113.3,274.7 114.1,275.1 114.9,276.1 115.6,275.1 116.4,274.8 117.2,275.8 117.9,276.1 118.7,275.9 119.4,275.5 120.2,276.1 121.0,275.4 121.7,274.7 122.5,275.6 123.3,275.2 124.0,275.8 124.8,274.8 125.6,275.6 126.3,275.8 127.1,275.6 127.9,276.3 128.6,275.9 129.4,275.9 130.2,274.8 130.9,275.5 131.7,275.6 132.4,276.3 133.2,275.6 134.0,276.2 134.7,276.3 135.5,274.8 136.3,275.2 137.0,275.5 137.8,274.8 138.6,275.9 139.3,276.9 140.1,275.9 140.9,275.1 141.6,276.1 142.4,275.6 143.1,275.5 143.9,275.5 144.7,275.1 145.4,274.5 146.2,275.4 147.0,275.6 147.7,276.1 148.5,275.4 149.3,276.3 150.0,275.9 150.8,276.2 151.6,276.6 152.3,275.9 153.1,276.6 153.8,275.4 154.6,275.6 155.4,275.8 156.1,276.2 156.9,276.2 157.7,276.2 158.4,276.9 159.2,275.5 160.0,276.1 160.7,275.6 161.5,275.6 162.3,276.5 163.0,276.1 163.8,275.4 164.6,275.8 165.3,276.6 166.1,275.6 166.8,275.9 167.6,274.9 168.4,275.6 169.1,276.6 169.9,275.6 170.7,275.5 171.4,275.8 172.2,273.7 173.0,271.3 173.7,268.2 174.5,269.2 175.3,267.0 176.0,267.0 176.8,267.9 177.5,270.2 178.3,270.2 179.1,270.2 179.8,269.9 180.6,270.7 181.4,269.2 182.1,268.5 182.9,267.4 183.7,267.0 184.4,268.4 185.2,266.7 186.0,268.2 186.7,269.9 187.5,269.9 188.2,268.9 189.0,271.0 189.8,271.9 190.5,270.6 191.3,268.9 192.1,267.4 192.8,269.5 193.6,270.9 194.4,270.2 195.1,270.3 195.9,271.2 196.7,271.2 197.4,271.0 198.2,270.2 199.0,270.3 199.7,270.6 200.5,268.9 201.2,267.9 202.0,265.0 202.8,260.2 203.5,264.6 204.3,262.1 205.1,218.4 205.8,174.6 206.6,156.1 207.4,137.0 208.1,126.3 208.9,120.1 209.7,120.5 210.4,119.3 211.2,120.8 211.9,120.9 212.7,120.7 213.5,120.5 214.2,120.8 215.0,119.4 215.8,121.6 216.5,120.5 217.3,121.8 218.1,121.6 218.8,122.2 219.6,123.2 220.4,122.2 221.1,123.0 221.9,122.6 222.6,123.3 223.4,123.7 224.2,123.3 224.9,122.9 225.7,124.3 226.5,122.9 227.2,123.5 228.0,123.5 228.8,123.6 229.5,123.9 230.3,124.2 231.1,122.6 231.8,125.3 232.6,125.0 233.4,125.8 234.1,124.9 234.9,126.1 235.6,125.4 236.4,124.7 237.2,119.0 237.9,32.6 238.7,186.6 239.5,207.2 240.2,215.0 241.0,219.5 241.8,223.3 242.5,225.9 243.3,228.5 244.1,229.7 244.8,232.5 245.6,234.1 246.3,234.9 247.1,234.3 247.9,236.0 248.6,236.7 249.4,237.0 250.2,239.2 250.9,239.9 251.7,239.8 252.5,240.6 253.2,241.2 254.0,242.5 254.8,241.9 255.5,242.3 256.3,241.3 257.0,207.5 257.8,165.3 258.6,137.6 259.3,122.8 260.1,120.2 260.9,125.0 261.6,125.7 262.4,131.4 263.2,132.3 263.9,132.4 264.7,131.7 265.5,132.6 266.2,134.7 267.0,132.8 267.8,133.3 268.5,131.6 269.3,134.2 270.0,133.3 270.8,135.1 271.6,132.3 272.3,131.2 273.1,134.2 273.9,136.1 274.6,132.7 275.4,133.3 276.2,134.9 276.9,133.8 277.7,134.2 278.5,134.0 279.2,133.5 280.0,135.2 280.7,134.7 281.5,134.8 282.3,136.9 283.0,135.9 283.8,134.5 284.6,134.2 285.3,136.1 286.1,135.1 286.9,137.2 287.6,135.1 288.4,104.3 289.2,117.6 289.9,198.8 290.7,211.5 291.4,218.8 292.2,221.0 293.0,224.0 293.7,228.0 294.5,227.8 295.3,229.7 296.0,232.2 296.8,232.4 297.6,232.9 298.3,235.2 299.1,234.3 299.9,236.2 300.6,236.7 301.4,236.4 302.2,235.3 302.9,160.6 303.7,136.5 304.4,126.4 305.2,129.3 306.0,129.9 306.7,131.6 307.5,130.6 308.3,131.2 309.0,132.1 309.8,133.4 310.6,134.9 311.3,133.1 312.1,134.8 312.9,134.0 313.6,133.7 314.4,135.6 315.1,136.2 315.9,137.5 316.7,137.6 317.4,138.6 318.2,139.6 319.0,138.4 319.7,138.3 320.5,140.3 321.3,139.1 322.0,140.1 322.8,141.1 323.6,142.6 324.3,140.7 325.1,144.7 325.8,144.6 326.6,143.5 327.4,143.2 328.1,143.1 328.9,124.7 329.7,94.5 330.4,199.9 331.2,214.3 332.0,218.8 332.7,223.0 333.5,225.9 334.3,227.1 335.0,228.6 335.8,230.0 336.6,229.6 337.3,232.7 338.1,232.0 338.8,233.9 339.6,234.2 340.4,233.6 341.1,235.5 341.9,235.0 342.7,236.0 343.4,235.6 344.2,236.0 345.0,237.8 345.7,234.5 346.5,176.2 347.3,154.3 348.0,144.0 348.8,142.4 349.5,146.6 350.3,148.1 351.1,148.0 351.8,148.9 352.6,150.9 353.4,153.0 354.1,153.0 354.9,154.1 355.7,152.2 356.4,154.4 357.2,154.3 358.0,154.4 358.7,154.4 359.5,152.9 360.2,152.3 361.0,151.0 361.8,152.2 362.5,150.9 363.3,151.5 364.1,151.2 364.8,154.1 365.6,151.7 366.4,152.0 367.1,150.5 367.9,150.6 368.7,152.2 369.4,152.9 370.2,153.6 371.0,152.6 371.7,153.6 372.5,155.0 373.2,154.7 374.0,151.7 374.8,109.6 375.5,194.0 376.3,213.6 377.1,220.3 377.8,226.1 378.6,229.7 379.4,233.5 380.1,234.6 380.9,237.0 381.7,239.5 382.4,240.8 383.2,242.6 383.9,242.9 384.7,243.6 385.5,243.9 386.2,244.0 387.0,246.2 387.8,244.6 388.5,246.4 389.3,245.0 390.1,246.0 390.8,245.0 391.6,246.9 392.4,246.8 393.1,246.8 393.9,247.2 394.6,247.4 395.4,247.1 396.2,248.6 396.9,248.3 397.7,248.3 398.5,246.9 399.2,248.2 400.0,248.3 400.8,248.1 401.5,248.2 402.3,248.6 403.1,248.2 403.8,249.3 404.6,250.0 405.4,248.8 406.1,248.2 406.9,249.7 407.6,249.3 408.4,248.8 409.2,249.7 409.9,250.4 410.7,249.7 411.5,249.9 412.2,249.3 413.0,251.1 413.8,249.3 414.5,249.9 415.3,251.4 416.1,250.9 416.8,251.3 417.6,250.6 418.3,251.0 419.1,251.4 419.9,250.4 420.6,250.7 421.4,251.0 422.2,251.4 422.9,251.7 423.7,251.4 424.5,251.3 425.2,251.7 426.0,251.7 426.8,252.0 427.5,251.8 428.3,251.6 429.0,252.1 429.8,251.3 430.6,251.3 431.3,251.6 432.1,252.1 432.9,251.7 433.6,251.4 434.4,251.4 435.2,251.6 435.9,252.7 436.7,252.3 437.5,253.1 438.2,252.4 439.0,252.7 439.8,252.0 440.5,252.8 441.3,252.4 442.0,251.4 442.8,251.8 443.6,252.7 444.3,252.1 445.1,252.7 445.9,252.7 446.6,252.4 447.4,253.2 448.2,253.1 448.9,252.3 449.7,252.3 450.5,252.8 451.2,253.5 452.0,253.0 452.7,253.2 453.5,252.7 454.3,252.4 455.0,253.1 455.8,253.0 456.6,253.2 457.3,253.4 458.1,252.5 458.9,253.5 459.6,253.1 460.4,253.8 461.2,253.2 461.9,253.4 462.7,253.8 463.4,253.7 464.2,252.8 465.0,253.1 465.7,254.5 466.5,252.8 467.3,252.7 468.0,253.8 468.8,253.9 469.6,254.4 470.3,253.2 471.1,253.9 471.9,253.8 472.6,253.9 473.4,253.7 474.2,254.2 474.9,253.9 475.7,254.4 476.4,254.2 477.2,253.2 478.0,253.7 478.7,254.6 479.5,254.4 480.3,254.6 481.0,253.5 481.8,254.4 482.6,253.5 483.3,254.2 484.1,253.7 484.9,253.9 485.6,254.5 486.4,253.8 487.1,253.2 487.9,254.8 488.7,254.4 489.4,254.5 490.2,254.5 491.0,254.5 491.7,253.4 492.5,254.8 493.3,254.5 494.0,254.6 494.8,253.8 495.6,254.2 496.3,254.4 497.1,254.9 497.8,253.7 498.6,254.1 499.4,254.1 500.1,255.5 500.9,255.2 501.7,254.9 502.4,255.1 503.2,255.1 504.0,254.5 504.7,255.2 505.5,254.6 506.3,254.1 507.0,255.1 507.8,254.9 508.6,255.5 509.3,255.1 510.1,255.2 510.8,255.3 511.6,254.5 512.4,254.6 513.1,255.3 513.9,255.3 514.7,254.1 515.4,255.5 516.2,254.1 517.0,254.8 517.7,254.9 518.5,254.9 519.3,256.2 520.0,254.9 520.8,255.6 521.5,255.6 522.3,255.3 523.1,255.2 523.8,254.9 524.6,255.8 525.4,255.6 526.1,255.3 526.9,256.0 527.7,254.8 528.4,255.1 529.2,255.3 530.0,255.6 530.7,256.3 531.5,255.3 532.2,255.9 533.0,255.3 533.8,255.9 534.5,256.0 535.3,254.8 536.1,255.3 536.8,255.5 537.6,255.8 538.4,255.3 539.1,256.0 539.9,255.2 540.7,255.1 541.4,255.2 542.2,255.1 543.0,256.0 543.7,255.9 544.5,255.5 545.2,255.9 546.0,256.6 546.8,253.8 547.5,255.8 548.3,256.0 549.1,255.6 549.8,255.9 550.6,256.2 551.4,255.5 552.1,255.9 552.9,255.2 553.7,255.9 554.4,255.8 555.2,255.3 555.9,255.8 556.7,255.8 557.5,255.6 558.2,256.2 559.0,254.5 559.8,255.6 560.5,255.9 561.3,255.2 562.1,257.2 562.8,255.9 563.6,256.0 564.4,256.6 565.1,257.0 565.9,256.6 566.6,256.2 567.4,256.5 568.2,256.3 568.9,256.5 569.7,256.7 570.5,257.0 571.2,256.3 572.0,255.3 572.8,257.0 573.5,256.6 574.3,256.0 575.1,255.5 575.8,256.2 576.6,256.6 577.4,256.3 578.1,256.2 578.9,256.2 579.6,256.9 580.4,256.3 581.2,256.6 581.9,256.9 582.7,256.2 583.5,256.7 584.2,256.2 585.0,256.5 585.8,256.3 586.5,256.7 587.3,255.8 588.1,257.0 588.8,256.3 589.6,256.6 590.3,257.2 591.1,256.9 591.9,256.2 592.6,256.9 593.4,257.0 594.2,256.6 594.9,256.7 595.7,256.6 596.5,256.0 597.2,257.0 598.0,256.5 598.8,256.2 599.5,257.0 600.3,256.0 601.0,257.4 601.8,256.0 602.6,256.9 603.3,256.0 604.1,257.4 604.9,257.3 605.6,256.5 606.4,256.3 607.2,257.2 607.9,257.2 608.7,256.3 609.5,256.2 610.2,256.7 611.0,256.0 611.8,256.9 612.5,256.7 613.3,256.3 614.0,256.7 614.8,256.7 615.6,256.7 616.3,256.5 617.1,257.0 617.9,257.3 618.6,256.3 619.4,256.2 620.2,255.8 620.9,256.3 621.7,255.8 622.5,257.2 623.2,257.2 624.0,256.5 624.7,256.9 625.5,256.9 626.3,256.9 627.0,257.7 627.8,256.5 628.6,257.3 629.3,257.2 630.1,257.4 630.9,256.9 631.6,256.2 632.4,256.3 633.2,257.2 633.9,257.0 634.7,256.6 635.4,257.0 636.2,257.7 637.0,258.1 637.7,256.9 638.5,256.9 639.3,257.6 640.0,257.3 640.8,258.0 641.6,257.0 642.3,257.6 643.1,256.9 643.9,256.2 644.6,257.7 645.4,257.4 646.2,258.1 646.9,256.7 647.7,258.3 648.4,258.3 649.2,256.9 650.0,257.2 650.7,256.5 651.5,257.4 652.3,255.9 653.0,258.0 653.8,257.4 654.6,257.2 655.3,257.6 656.1,257.7 656.9,256.9 657.6,257.3 658.4,256.7 659.1,257.2 659.9,257.6 660.7,257.4 661.4,256.3 662.2,256.9 663.0,257.4 663.7,257.4 664.5,256.3 665.3,257.0 666.0,257.3 666.8,257.9 667.6,257.2 668.3,256.9 669.1,258.6 669.8,256.7 670.6,257.0 671.4,257.4 672.1,256.7 672.9,256.7 673.7,257.0 674.4,258.6 675.2,257.4 676.0,257.3 676.7,257.4 677.5,257.0 678.3,257.4 679.0,258.0 679.8,258.6 680.6,257.4 681.3,257.6 682.1,258.4 682.8,257.2 683.6,258.3 684.4,257.4 685.1,257.7 685.9,256.9 686.7,258.0 687.4,257.0 688.2,257.6 689.0,256.9 689.7,258.4 690.5,257.7 691.3,257.3 692.0,258.1 692.8,257.6 693.5,257.3 694.3,258.3 695.1,257.7 695.8,257.2 696.6,257.3 697.4,256.9 698.1,257.9 698.9,257.0 699.7,257.4 700.4,258.1 701.2,256.7 702.0,258.8 702.7,257.7 703.5,258.0 704.2,257.3 705.0,258.6 705.8,257.0 706.5,258.1 707.3,258.7 708.1,258.7 708.8,257.7 709.6,258.4 710.4,258.0 711.1,257.0 711.9,258.1 712.7,257.3 713.4,258.0 714.2,257.6 715.0,258.3 715.7,258.1 716.5,258.1 717.2,257.4 718.0,257.7 718.8,257.9 719.5,257.9 720.3,258.0 721.1,258.0 721.8,258.0 722.6,258.1 723.4,257.2 724.1,258.3 724.9,258.1 725.7,259.1 726.4,258.3 727.2,258.7 727.9,259.1 728.7,258.4 729.5,258.4 730.2,258.1 731.0,258.4 731.8,258.6 732.5,258.1 733.3,258.3 734.1,258.3 734.8,257.0 735.6,258.7 736.4,258.1 737.1,258.0 737.9,258.3 738.6,258.1 739.4,258.1 740.2,257.2 740.9,258.1 741.7,258.3 742.5,258.4 743.2,259.4" fill="none" stroke="var(--hot)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+        <text x="101.9" y="262.8" class="svg-label" text-anchor="middle">at rest, ~780</text>
+        <text x="220.4" y="111.6" class="svg-label" text-anchor="middle">pull 1</text>
+        <text x="273.9" y="121.4" class="svg-label" text-anchor="middle">pull 2</text>
+        <text x="315.9" y="120.0" class="svg-label" text-anchor="middle">pull 3</text>
+        <text x="361.8" y="139.6" class="svg-label" text-anchor="middle">pull 4</text>
+        <text x="591.1" y="244.0" class="svg-label svg-muted" text-anchor="middle">let go, but still relaxing</text>
+        <g id="hover" hidden><line id="hx" x1="0" y1="20" x2="0" y2="300.0" stroke="var(--ink)" stroke-width="1" stroke-dasharray="3 3"/><circle id="hc" r="5" fill="var(--hot)" stroke="var(--paper)" stroke-width="2"/></g>
+        <rect id="hit" x="56" y="20" width="688" height="280" fill="transparent"/>
+      </svg>
+      <div id="tip" class="tip" hidden></div>
+      </div>
+      <figcaption>Each pull more than doubles the resistance and shows as a sharp step. After the last pull the cord does not return to 780 straight away: it is still drifting down a minute later. Rubber has memory.</figcaption>
+    </figure>
+    <details>
+      <summary>The same data as a table, one number per second</summary>
+      <div style="overflow-x:auto"><table class="data"><thead><tr><th>second</th><th>ohms (median)</th></tr></thead><tbody><tr><td>0</td><td>786</td></tr><tr><td>1</td><td>784</td></tr><tr><td>2</td><td>781</td></tr><tr><td>3</td><td>780</td></tr><tr><td>4</td><td>776</td></tr><tr><td>5</td><td>778</td></tr><tr><td>6</td><td>776</td></tr><tr><td>7</td><td>778</td></tr><tr><td>8</td><td>774</td></tr><tr><td>9</td><td>774</td></tr><tr><td>10</td><td>774</td></tr><tr><td>11</td><td>774</td></tr><tr><td>12</td><td>772</td></tr><tr><td>13</td><td>771</td></tr><tr><td>14</td><td>774</td></tr><tr><td>15</td><td>818</td></tr><tr><td>16</td><td>824</td></tr><tr><td>17</td><td>815</td></tr><tr><td>18</td><td>811</td></tr><tr><td>19</td><td>1102</td></tr><tr><td>20</td><td>1882</td></tr><tr><td>21</td><td>1868</td></tr><tr><td>22</td><td>1861</td></tr><tr><td>23</td><td>1851</td></tr><tr><td>24</td><td>1112</td></tr><tr><td>25</td><td>1030</td></tr><tr><td>26</td><td>1716</td></tr><tr><td>27</td><td>1793</td></tr><tr><td>28</td><td>1787</td></tr><tr><td>29</td><td>1783</td></tr><tr><td>30</td><td>1767</td></tr><tr><td>31</td><td>1085</td></tr><tr><td>32</td><td>1798</td></tr><tr><td>33</td><td>1786</td></tr><tr><td>34</td><td>1751</td></tr><tr><td>35</td><td>1723</td></tr><tr><td>36</td><td>1111</td></tr><tr><td>37</td><td>1060</td></tr><tr><td>38</td><td>1678</td></tr><tr><td>39</td><td>1647</td></tr><tr><td>40</td><td>1660</td></tr><tr><td>41</td><td>1648</td></tr><tr><td>42</td><td>1060</td></tr><tr><td>43</td><td>993</td></tr><tr><td>44</td><td>976</td></tr><tr><td>45</td><td>966</td></tr><tr><td>46</td><td>958</td></tr><tr><td>47</td><td>950</td></tr><tr><td>48</td><td>946</td></tr><tr><td>49</td><td>944</td></tr><tr><td>50</td><td>940</td></tr><tr><td>51</td><td>937</td></tr><tr><td>52</td><td>934</td></tr><tr><td>53</td><td>932</td></tr><tr><td>54</td><td>930</td></tr><tr><td>55</td><td>927</td></tr><tr><td>56</td><td>926</td></tr><tr><td>57</td><td>926</td></tr><tr><td>58</td><td>924</td></tr><tr><td>59</td><td>921</td></tr><tr><td>60</td><td>920</td></tr><tr><td>61</td><td>920</td></tr><tr><td>62</td><td>918</td></tr><tr><td>63</td><td>917</td></tr><tr><td>64</td><td>916</td></tr><tr><td>65</td><td>916</td></tr><tr><td>66</td><td>913</td></tr><tr><td>67</td><td>913</td></tr><tr><td>68</td><td>912</td></tr><tr><td>69</td><td>910</td></tr><tr><td>70</td><td>910</td></tr><tr><td>71</td><td>910</td></tr><tr><td>72</td><td>911</td></tr><tr><td>73</td><td>910</td></tr><tr><td>74</td><td>908</td></tr><tr><td>75</td><td>906</td></tr><tr><td>76</td><td>906</td></tr><tr><td>77</td><td>905</td></tr><tr><td>78</td><td>906</td></tr><tr><td>79</td><td>904</td></tr><tr><td>80</td><td>906</td></tr><tr><td>81</td><td>904</td></tr><tr><td>82</td><td>906</td></tr><tr><td>83</td><td>904</td></tr><tr><td>84</td><td>902</td></tr><tr><td>85</td><td>900</td></tr><tr><td>86</td><td>900</td></tr><tr><td>87</td><td>899</td></tr><tr><td>88</td><td>898</td></tr><tr><td>89</td><td>899</td></tr></tbody></table></div>
+    </details>
+    <p class="lede">Raw file: <code>FORM — P0 stretch2 2026-09-04.csv</code> in the vault next to the bench log. Columns: time in ms, raw sensor count, volts at A0, ohms.</p>
+  </section>
+  <script>
+  (function(){
+    var secs=[[0,786],[1,784],[2,781],[3,780],[4,776],[5,778],[6,776],[7,778],[8,774],[9,774],[10,774],[11,774],[12,772],[13,771],[14,774],[15,818],[16,824],[17,815],[18,811],[19,1102],[20,1882],[21,1868],[22,1861],[23,1851],[24,1112],[25,1030],[26,1716],[27,1793],[28,1787],[29,1783],[30,1767],[31,1085],[32,1798],[33,1786],[34,1751],[35,1723],[36,1111],[37,1060],[38,1678],[39,1647],[40,1660],[41,1648],[42,1060],[43,993],[44,976],[45,966],[46,958],[47,950],[48,946],[49,944],[50,940],[51,937],[52,934],[53,932],[54,930],[55,927],[56,926],[57,926],[58,924],[59,921],[60,920],[61,920],[62,918],[63,917],[64,916],[65,916],[66,913],[67,913],[68,912],[69,910],[70,910],[71,910],[72,911],[73,910],[74,908],[75,906],[76,906],[77,905],[78,906],[79,904],[80,906],[81,904],[82,906],[83,904],[84,902],[85,900],[86,900],[87,899],[88,898],[89,899]]; var svg=document.getElementById('stretchchart'); var hit=document.getElementById('hit');
+    var hov=document.getElementById('hover'), hx=document.getElementById('hx'), hc=document.getElementById('hc'), tip=document.getElementById('tip');
+    var L=56,R=16,T=20,B=40,W=760,H=340,tmax=90,ymin=600,ymax=2600;
+    function X(t){return L+(W-L-R)*t/tmax} function Y(v){return T+(H-T-B)*(1-(v-ymin)/(ymax-ymin))}
+    function move(e){
+      var pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY; var p=pt.matrixTransform(svg.getScreenCTM().inverse());
+      var t=Math.max(0,Math.min(tmax-1,(p.x-L)/(W-L-R)*tmax)); var s=Math.round(t); var row=secs.find(function(r){return r[0]===s}); if(!row) return;
+      hov.hidden=false; hx.setAttribute('x1',X(s)); hx.setAttribute('x2',X(s)); hc.setAttribute('cx',X(s)); hc.setAttribute('cy',Y(row[1]));
+      tip.hidden=false; tip.textContent=s+' s  ·  '+row[1]+' Ω';
+      var box=svg.getBoundingClientRect(); var px=box.left+X(s)/W*box.width, py=box.top+Y(row[1])/H*box.height;
+      var wrap=svg.parentNode.getBoundingClientRect(); tip.style.left=(px-wrap.left+12)+'px'; tip.style.top=(py-wrap.top-34)+'px';
+    }
+    hit.addEventListener('mousemove',move); hit.addEventListener('touchmove',function(e){move(e.touches[0])},{passive:true});
+    hit.addEventListener('mouseleave',function(){hov.hidden=true;tip.hidden=true});
+  })();
+  </script>
+
+  <section>
+    <div class="step">Sept 4 finish line · reached</div>
+    <h2>Checklist</h2>
+    <ol>
+      <li>Headers placed, XIAO seated across the gap (not soldered yet, and it still worked)</li>
+      <li>Wire from A0 row → clip → cord → clip → wire from 3V3 row</li>
+      <li>10 kΩ resistor from A0 row to GND row</li>
+      <li>Program loaded with the "XIAO nRF52840 Sense (No Updates)" board, graph moves when you stretch</li>
+      <li>Rest ~780 Ω · stretched ~1650–1860 Ω · drift at rest ~10 Ω per 20 s · slow relax after a pull</li>
+    </ol>
+    <div class="callout"><strong>Two rules learned the hard way:</strong> always pick the board named "(No Updates)". And a red blinking LED means rescue mode, not a running program: one tap on RST restarts the program, two taps enters rescue mode.</div>
+  </section>
+
+  <section>
+    <div class="step">Next session · the body test</div>
+    <h2>Put the cord on your arm and do a curl</h2>
+    <p>This is the test the whole idea depends on. A muscle gets thicker when it contracts. If the band stretches with it, the graph should show one bump per rep. Prep steps 1 to 3 before you sit down with the laptop.</p>
+    <figure>
+      <svg viewBox="0 0 700 320" role="img" aria-label="An elastic band wrapped around an upper arm with hook-and-loop closing it. A 4-inch piece of rubber cord lies along the front of the arm, both ends taped to the band, with alligator clips on each end also taped down. Two clip leads run down to the breadboard on the table." xmlns="http://www.w3.org/2000/svg">
+        <!-- arm -->
+        <path d="M60 200 Q120 90 260 92 Q400 94 470 200 L470 300 L60 300 Z" fill="var(--panel)" stroke="var(--rule)" stroke-width="2"/>
+        <text x="265" y="290" class="svg-label svg-muted" text-anchor="middle">upper arm, bicep facing you</text>
+        <!-- band -->
+        <path d="M80 190 Q265 150 450 190 L450 230 Q265 190 80 230 Z" fill="#2B2B2B"/>
+        <rect x="392" y="182" width="52" height="46" rx="4" fill="var(--ink)" stroke="var(--solder)" stroke-width="1.5" stroke-dasharray="3 2"/>
+        <text x="418" y="250" class="svg-label" text-anchor="middle">hook-and-loop</text>
+        <!-- cord along band -->
+        <path d="M150 196 Q265 174 380 196" fill="none" stroke="var(--hot)" stroke-width="7" stroke-linecap="round"/>
+        <!-- tape anchors -->
+        <rect x="132" y="180" width="36" height="30" rx="3" fill="var(--gold)" opacity="0.85" transform="rotate(-8 150 195)"/>
+        <rect x="362" y="180" width="36" height="30" rx="3" fill="var(--gold)" opacity="0.85" transform="rotate(8 380 195)"/>
+        <text x="150" y="164" class="svg-label" text-anchor="middle">tape</text>
+        <text x="380" y="164" class="svg-label" text-anchor="middle">tape</text>
+        <text x="265" y="150" class="svg-label svg-hot" text-anchor="middle" font-weight="700">cord, 4 in, middle left free</text>
+        <!-- clips -->
+        <path d="M128 200 L108 214 L112 226 L132 212 Z" fill="var(--iron)"/>
+        <path d="M402 200 L422 214 L418 226 L398 212 Z" fill="var(--iron)"/>
+        <!-- leads down to breadboard -->
+        <path d="M110 222 Q90 300 560 300 Q600 300 600 270" fill="none" stroke="var(--iron)" stroke-width="3"/>
+        <path d="M420 222 Q440 280 570 285 Q612 285 612 270" fill="none" stroke="var(--iron)" stroke-width="3"/>
+        <rect x="540" y="230" width="140" height="44" rx="4" fill="var(--board-blue)"/>
+        <rect x="585" y="222" width="50" height="34" rx="6" fill="var(--pcb)"/>
+        <text x="610" y="296" class="svg-label" text-anchor="middle">breadboard on the table</text>
+        <text x="610" y="312" class="svg-label svg-muted" text-anchor="middle">leave it wired as it is</text>
+        <text x="40" y="40" class="svg-label" font-weight="700">Both cord ENDS anchored to the band, so the band stretching = the cord stretching.</text>
+        <text x="40" y="58" class="svg-label svg-muted">Clips taped down too, so a curl can't yank them off. Leads long and slack.</text>
+      </svg>
+      <figcaption>The band does the stretching, the cord rides along and reports it. If the cord isn't anchored at both ends, the band stretches and the cord just slides.</figcaption>
+    </figure>
+    <ol>
+      <li><strong>Make the band.</strong> Cut a strip of the black elastic that wraps around your upper arm with a couple of inches of overlap. Stick hook-and-loop on the ends so it closes.</li>
+      <li><strong>Attach the cord.</strong> Cut a fresh 4-inch piece of cord. Tape or stitch each end to the elastic, 4 inches apart, middle free. Clip an alligator clip on each cord end and tape the clips down too.</li>
+      <li><strong>Wear it.</strong> Band around the bicep, snug but comfortable, cord along the front where the muscle bulges. Clip leads hang down to the breadboard. Sit close to the laptop, keep slack in the leads.</li>
+      <li><strong>Record.</strong> Plug in, say "ready", I start a 60-second recording. Hold still 5 seconds, do 5 slow curls, hold still.</li>
+      <li><strong>Read it together.</strong> We're looking for 5 bumps. Five bumps means FORM's core idea works on a real arm.</li>
+    </ol>
+    <div class="callout stop"><strong>Soldering</strong> the three pins is optional before this. Everything worked unsoldered on Sept 4. Do it whenever.</div>
+  </section>
+
+  <section>
+    <div class="step">After the data sprint · cutting the cable</div>
+    <h2>Going wireless: Bluetooth and a battery</h2>
+    <p>Today the board sends its numbers up the USB cable. The XIAO you have already has Bluetooth Low Energy built in, so the cable can go. Four pieces, in order. Only the battery is something to buy.</p>
+    <figure>
+      <svg viewBox="0 0 700 250" role="img" aria-label="Today: band with cord, cable to laptop. After: band with cord, XIAO and a small battery inside the band, a Bluetooth link to the laptop, no cable." xmlns="http://www.w3.org/2000/svg">
+        <text x="30" y="30" class="svg-label" font-weight="700">today</text>
+        <rect x="30" y="60" width="150" height="40" rx="20" fill="#2B2B2B"/>
+        <path d="M60 80 Q105 66 150 80" fill="none" stroke="var(--hot)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M180 80 L290 80" stroke="var(--iron)" stroke-width="3"/>
+        <rect x="290" y="55" width="60" height="50" rx="4" fill="var(--board-blue)"/>
+        <rect x="305" y="50" width="30" height="20" rx="4" fill="var(--pcb)"/>
+        <path d="M350 80 L420 80" stroke="var(--iron)" stroke-width="3"/>
+        <rect x="420" y="50" width="90" height="60" rx="4" fill="var(--panel)" stroke="var(--rule)"/>
+        <text x="465" y="85" class="svg-label svg-muted" text-anchor="middle">laptop</text>
+        <text x="105" y="125" class="svg-label svg-muted" text-anchor="middle">band</text>
+        <text x="320" y="125" class="svg-label svg-muted" text-anchor="middle">breadboard</text>
+        <text x="235" y="70" class="svg-label svg-muted" text-anchor="middle">clips</text>
+        <text x="385" y="70" class="svg-label svg-muted" text-anchor="middle">USB</text>
+
+        <text x="30" y="170" class="svg-label" font-weight="700">after</text>
+        <rect x="30" y="195" width="150" height="40" rx="20" fill="#2B2B2B"/>
+        <path d="M45 215 Q80 202 115 215" fill="none" stroke="var(--hot)" stroke-width="5" stroke-linecap="round"/>
+        <rect x="122" y="203" width="24" height="16" rx="3" fill="var(--pcb)"/>
+        <rect x="150" y="205" width="22" height="12" rx="3" fill="var(--gold)"/>
+        <text x="134" y="248" class="svg-label svg-muted" text-anchor="middle">XIAO</text>
+        <text x="161" y="248" class="svg-label svg-muted" text-anchor="middle">battery</text>
+        <g stroke="var(--ink)" stroke-width="1.5" fill="none" stroke-dasharray="4 4"><path d="M190 215 Q300 190 420 215"/></g>
+        <text x="305" y="195" class="svg-label" text-anchor="middle">Bluetooth, ~10 m</text>
+        <rect x="420" y="185" width="90" height="60" rx="4" fill="var(--panel)" stroke="var(--rule)"/>
+        <text x="465" y="220" class="svg-label svg-muted" text-anchor="middle">laptop</text>
+        <text x="600" y="215" class="svg-label svg-muted" text-anchor="middle">later: phone</text>
+      </svg>
+      <figcaption>Everything moves into the band. The laptop just needs to be within Bluetooth range with FORM Lab open.</figcaption>
+    </figure>
+    <ol>
+      <li><strong>Firmware.</strong> The board advertises itself over Bluetooth and streams the same ten numbers, 20 times a second. Software only. It can be tested while the board is still on USB power.</li>
+      <li><strong>FORM Lab.</strong> A "Connect over Bluetooth" button next to the USB status. Chrome can talk to Bluetooth devices directly from the page, so nothing else changes.</li>
+      <li><strong>Battery.</strong> The XIAO has a built-in charger and two pads on its underside marked for a battery. Buy a small rechargeable lithium battery, 3.7 V, 300 to 500 mAh, about the size of a stick of gum, with two bare wires or a small plug you can cut off. Solder the two wires to the pads: two more dots like the headers. It charges whenever the board is plugged into USB.</li>
+      <li><strong>Leave the breadboard.</strong> Short wires soldered to A0, 3V3, and GND, the cord and resistor clipped to those. Same circuit, small enough to sit in the band with the battery.</li>
+    </ol>
+    <div class="callout stop"><strong>Timing:</strong> keep USB for the data sprint with Suna. It's reliable and never runs flat. Order the battery now, the Bluetooth firmware and button get built in the meantime, and switching over is one afternoon once the recordings are in.</div>
+  </section>
+</main>
