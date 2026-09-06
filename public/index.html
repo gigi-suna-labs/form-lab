@@ -7,8 +7,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
   :root {
-    --paper: #FAF8F3; --cream: #F1ECE3; --ink: #0B0A09; --ink-2: #2A2724; --stone: #8B8377; --line: rgba(11,10,9,.14);
-    --blush: #C4A094; --series: #C2573A; --ax: #C2573A; --ay: #2F6F9F; --az: #4E8A3A; --good: #2F7D4F; --warn: #B8860B; --panel: #FFFFFF;
+    --paper: #FAF8F3; --cream: #F1ECE3; --ink: #0B0A09; --ink-2: #2A2724; --stone: #746D63; --line: rgba(11,10,9,.14);
+    --blush: #C4A094; --series: #C2573A; --ax: #C2573A; --ay: #2F6F9F; --az: #4E8A3A; --good: #2F7D4F; --warn: #B8860B; --recording: #C0392B; --panel: #FFFFFF;
     --sans: "Instrument Sans", -apple-system, "Helvetica Neue", Arial, sans-serif;
     --serif: "Instrument Serif", Georgia, serif;
     --mono: "JetBrains Mono", Menlo, monospace;
@@ -17,6 +17,7 @@
     :root { --paper: #0B0A09; --cream: #161412; --ink: #F1ECE3; --ink-2: #D8D2C6; --stone: #A89E90; --line: rgba(241,236,227,.16); --series: #D96A4E; --ax: #D96A4E; --ay: #4A8FC4; --az: #5FA24C; --panel: #161412; --good: #6FBF8F; --warn: #E0B44C; }
   }
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
   header { display: flex; align-items: baseline; justify-content: space-between; padding: 22px 32px 14px; border-bottom: 1px solid var(--line); }
   .wordmark { font-weight: 700; letter-spacing: .30em; text-transform: uppercase; font-size: 17px; }
@@ -24,14 +25,14 @@
   .status { display: flex; align-items: center; gap: 18px; font-size: 13px; color: var(--stone); font-family: var(--mono); }
   .pill { display: inline-flex; align-items: center; gap: 7px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-2); }
   .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--stone); }
-  .dot.on { background: var(--good); } .dot.rec { background: #C0392B; animation: blink 1s infinite; }
+  .dot.on { background: var(--good); } .dot.rec { background: var(--recording); animation: blink 1s infinite; }
   @keyframes blink { 50% { opacity: .3; } }
   main { display: grid; grid-template-columns: 320px 1fr; gap: 28px; padding: 20px 32px 60px; max-width: 1500px; align-items: start; }
   aside { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
   .tabs { display: flex; gap: 6px; margin-bottom: 14px; }
   .tab { font: inherit; font-weight: 600; font-size: 13px; letter-spacing: .04em; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink-2); cursor: pointer; }
   .tab.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-  .tab .rdot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #C0392B; margin-left: 8px; vertical-align: middle; animation: blink 1s infinite; }
+  .tab .rdot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--recording); margin-left: 8px; vertical-align: middle; animation: blink 1s infinite; }
   @media (max-width: 960px) { main { grid-template-columns: 1fr; } aside { position: static; max-height: none; } }
   section.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 18px 20px; }
   h2 { font-family: var(--serif); font-weight: 400; font-size: 24px; margin: 0 0 4px; }
@@ -53,6 +54,7 @@
   input[type=text] { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--paper); color: var(--ink); min-width: 220px; }
   button { font: inherit; font-weight: 600; padding: 8px 14px; border-radius: 4px; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); cursor: pointer; }
   button.ghost { background: transparent; color: var(--ink); }
+  button:active:not(:disabled) { transform: scale(.98); }
   button:disabled { opacity: .4; cursor: default; }
   button:focus-visible, input:focus-visible, .sess:focus-visible { outline: 2px solid var(--blush); outline-offset: 2px; }
   ul.sessions { list-style: none; margin: 12px 0 0; padding: 0; }
@@ -75,13 +77,26 @@
   .chip.ex { background: var(--ink); color: var(--paper); }
   .marks { font-family: var(--mono); font-size: 12px; color: var(--ink-2); margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px 14px; }
   .empty { color: var(--stone); font-style: italic; font-family: var(--serif); font-size: 18px; padding: 30px 0; text-align: center; }
+  #ble-btn { padding: 4px 10px; border-color: var(--line); color: var(--ink-2); font-family: var(--mono); font-size: 12px; white-space: nowrap; }
+  @media (max-width: 640px) {
+    header { align-items: flex-start; flex-direction: column; gap: 12px; padding-inline: 20px; }
+    .status { width: 100%; flex-wrap: wrap; gap: 8px; }
+    main { padding-inline: 20px; }
+    .tiles { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; }
+    button:active:not(:disabled) { transform: none; }
+    .dot.rec, .tab .rdot { animation: none; }
+  }
 </style>
 </head>
 <body>
 <header>
   <div class="wordmark">Form <span>lab</span></div>
   <div class="status">
-    <span class="pill"><span class="dot" id="conn-dot"></span><span id="conn-text">looking for the XIAO…</span></span>
+    <span class="pill"><span class="dot" id="conn-dot"></span><span id="conn-text" role="status" aria-live="polite">looking for the XIAO…</span></span>
+    <button class="ghost" id="ble-btn" type="button">Connect Bluetooth</button>
     <span class="pill" id="rec-pill" hidden><span class="dot rec"></span><span id="rec-text"></span></span>
   </div>
 </header>
@@ -294,37 +309,117 @@ const live = makeChart(document.getElementById('live-chart'), document.getElemen
 const liveAcc = makeMulti($id('live-acc'), $id('live-acc-tip'), ['ax', 'ay', 'az']);
 const liveGyr = makeMulti($id('live-gyr'), $id('live-gyr-tip'), ['gx', 'gy', 'gz']);
 function $id(i) { return document.getElementById(i); }
-let liveRows = [], liveT0 = null, recStart = null, connected = false, recordingName = null, liveMarks = [];
+const NUS_SERVICE = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+const NUS_TX = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+const browserSourceId = globalThis.crypto?.randomUUID?.() || `browser-${Date.now()}-${Math.random()}`;
+let liveRows = [], liveT0 = null, recStart = null, connected = false, usbConnected = false, recordingName = null, liveMarks = [];
+let bleDevice = null, bleConnected = false, bleConnecting = false, blePending = '', bleBatch = [], connectionNotice = '';
 const $ = id => document.getElementById(id);
 function fmt(v) { return v == null || isNaN(v) ? '—' : Math.round(v).toLocaleString(); }
+
+function ingestSample(m) {
+  if (liveT0 == null) liveT0 = m.t;
+  const t = (m.t - liveT0) / 1000;
+  const row = { t, ohms: m.ohms };
+  if (m.ax !== undefined) Object.assign(row, { ax: m.ax, ay: m.ay, az: m.az, gx: m.gx, gy: m.gy, gz: m.gz });
+  liveRows.push(row);
+  if (liveRows.length > 20 * 120) liveRows.splice(0, liveRows.length - 20 * 120);
+  const an = analyze(liveRows);
+  live.set(liveRows, an, 30, liveMarks); liveAcc.set(liveRows, 30); liveGyr.set(liveRows, 30);
+  $('t-now').textContent = fmt(m.ohms); $('t-base').textContent = fmt(an.base[an.base.length - 1]);
+  if (recordingName != null && recStart != null) { const sub = liveRows.filter(r => r.t >= recStart); const a2 = analyze(sub); $('t-reps').textContent = a2.reps; $('t-tut').textContent = a2.tut.toFixed(1) + ' s'; }
+}
 
 const es = new EventSource('/stream');
 es.onmessage = ev => {
   const m = JSON.parse(ev.data);
-  if (m.type === 'status') { connected = !!m.connected; recordingName = m.recording || null; renderStatus(); }
+  if (m.type === 'status') { usbConnected = !!m.connected; recordingName = m.recording || null; renderStatus(); }
   if (m.type === 'recording') { recordingName = m.active ? m.name : null; if (m.active) { recStart = liveRows.length ? liveRows[liveRows.length - 1].t : 0; liveMarks = []; } renderStatus(); if (m.saved) loadSessions(m.name); }
   if (m.type === 'mark') { liveMarks.push({ t: (recStart || 0) + m.t, label: m.label }); }
   if (m.type === 'sample') {
-    if (!connected) { connected = true; renderStatus(); }
-    if (liveT0 == null) liveT0 = m.t;
-    const t = (m.t - liveT0) / 1000; const row = { t, ohms: m.ohms }; if (m.ax !== undefined) Object.assign(row, { ax: m.ax, ay: m.ay, az: m.az, gx: m.gx, gy: m.gy, gz: m.gz }); liveRows.push(row);
-    if (liveRows.length > 20 * 120) liveRows.splice(0, liveRows.length - 20 * 120);
-    const an = analyze(liveRows);
-    live.set(liveRows, an, 30, liveMarks); liveAcc.set(liveRows, 30); liveGyr.set(liveRows, 30);
-    $('t-now').textContent = fmt(m.ohms); $('t-base').textContent = fmt(an.base[an.base.length - 1]);
-    if (recordingName != null && recStart != null) { const sub = liveRows.filter(r => r.t >= recStart); const a2 = analyze(sub); $('t-reps').textContent = a2.reps; $('t-tut').textContent = a2.tut.toFixed(1) + ' s'; }
+    if (bleConnected || m.sourceId === browserSourceId) return;
+    if (!usbConnected) { usbConnected = true; renderStatus(); }
+    ingestSample(m);
   }
 };
-es.onerror = () => { connected = false; renderStatus(); };
+es.onerror = () => { usbConnected = false; renderStatus(); };
+
+function parseBleLine(line) {
+  const parts = line.trim().split(',');
+  if (parts.length !== 10) return null;
+  const n = parts.map(Number);
+  if (n.some(v => !Number.isFinite(v))) return null;
+  return { t: n[0], raw: n[1], volts: n[2], ohms: n[3], ax: n[4], ay: n[5], az: n[6], gx: n[7], gy: n[8], gz: n[9] };
+}
+
+function onBleValue(event) {
+  blePending += new TextDecoder().decode(event.target.value);
+  const lines = blePending.split('\n');
+  blePending = lines.pop() || '';
+  for (const line of lines) {
+    const sample = parseBleLine(line);
+    if (!sample) continue;
+    ingestSample(sample);
+    bleBatch.push(sample);
+    if (bleBatch.length > 20 * 120) bleBatch.splice(0, bleBatch.length - 20 * 120);
+  }
+}
+
+async function flushBleSamples() {
+  if (!bleBatch.length) return;
+  const samples = bleBatch.splice(0, 40);
+  try {
+    const response = await fetch('/api/samples', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sourceId: browserSourceId, samples }) });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (connectionNotice.startsWith('Live data is visible')) { connectionNotice = ''; renderStatus(); }
+  } catch {
+    bleBatch.unshift(...samples);
+    connectionNotice = 'Live data is visible, but session saving is waiting for the local server.';
+    renderStatus();
+  }
+}
+setInterval(flushBleSamples, 500);
+
+function onBleDisconnect() {
+  bleConnected = false; bleConnecting = false; blePending = ''; bleDevice = null;
+  connectionNotice = usbConnected ? '' : 'Bluetooth disconnected. Reconnect to continue.';
+  renderStatus();
+}
+
+async function toggleBluetooth() {
+  if (bleDevice?.gatt?.connected) { bleDevice.gatt.disconnect(); return; }
+  if (!navigator.bluetooth || !window.isSecureContext) return;
+  bleConnecting = true; connectionNotice = ''; renderStatus();
+  try {
+    const device = await navigator.bluetooth.requestDevice({ filters: [{ name: 'FORM Band' }], optionalServices: [NUS_SERVICE] });
+    device.addEventListener('gattserverdisconnected', onBleDisconnect);
+    const gatt = await device.gatt.connect();
+    const service = await gatt.getPrimaryService(NUS_SERVICE);
+    const tx = await service.getCharacteristic(NUS_TX);
+    tx.addEventListener('characteristicvaluechanged', onBleValue);
+    await tx.startNotifications();
+    bleDevice = device; bleConnected = true; blePending = ''; connectionNotice = '';
+    liveRows = []; liveT0 = null; liveMarks = []; recStart = recordingName ? 0 : null;
+  } catch (error) {
+    if (error?.name !== 'NotFoundError') connectionNotice = `Bluetooth connection failed: ${error?.message || 'unknown error'}`;
+  } finally { bleConnecting = false; renderStatus(); }
+}
 
 function renderStatus() {
-  $('conn-dot').className = 'dot' + (connected ? ' on' : ''); $('conn-text').textContent = connected ? 'XIAO connected' : 'looking for the XIAO…';
+  connected = bleConnected || usbConnected;
+  const supported = !!navigator.bluetooth && window.isSecureContext;
+  $('conn-dot').className = 'dot' + (connected ? ' on' : '');
+  $('conn-text').textContent = bleConnecting ? 'choosing FORM Band…' : bleConnected ? 'FORM Band · Bluetooth' : usbConnected ? 'XIAO · USB' : 'XIAO not connected';
+  $('ble-btn').disabled = bleConnecting || !supported;
+  $('ble-btn').setAttribute('aria-busy', String(bleConnecting));
+  $('ble-btn').textContent = !supported ? 'Bluetooth unavailable' : bleConnecting ? 'Connecting…' : bleConnected ? 'Disconnect Bluetooth' : 'Connect Bluetooth';
   $('rec-btn').disabled = !connected; $('rec-btn').textContent = recordingName ? 'Stop & save' : 'Record';
   $('mark-label').hidden = !recordingName; $('mark-btn').hidden = !recordingName; $('rec-form').style.opacity = recordingName ? .5 : 1;
   $('rec-pill').hidden = !recordingName; $('rec-text').textContent = recordingName ? 'recording · ' + recordingName : '';
   $('tab-live').innerHTML = 'Live' + (recordingName ? '<span class="rdot"></span>' : '');
-  $('rec-hint').textContent = recordingName ? 'Do the movement. Stop when done.' : connected ? 'Name it, hit Record, do the movement, then Stop.' : 'Plug the XIAO in. If its LED blinks red, tap RST once.';
+  $('rec-hint').textContent = connectionNotice || (recordingName ? 'Do the movement. Stop when done.' : connected ? 'Name it, hit Record, do the movement, then Stop.' : supported ? 'Connect by Bluetooth, or plug the XIAO into USB.' : 'Use Chrome or Edge on localhost for Bluetooth, or connect by USB.');
 }
+$('ble-btn').onclick = toggleBluetooth;
 $('rec-btn').onclick = async () => {
   if (recordingName) { await fetch('/api/record/stop', { method: 'POST' }); }
   else {

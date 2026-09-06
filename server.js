@@ -49,9 +49,18 @@ function onLine(line) {
   const n = parts.map(Number);
   const s = { t: n[0], raw: n[1], volts: n[2], ohms: n[3] };
   if (parts.length === 10) Object.assign(s, { ax: n[4], ay: n[5], az: n[6], gx: n[7], gy: n[8], gz: n[9] });
+  acceptSample(s);
+}
+
+function acceptSample(s, sourceId = null) {
   lastSample = s;
   if (recording) recording.rows.push(s);
-  broadcast({ type: 'sample', ...s, recording: recording ? recording.name : null });
+  broadcast({ type: 'sample', ...s, sourceId, recording: recording ? recording.name : null });
+}
+
+function validSample(s) {
+  const required = ['t', 'raw', 'volts', 'ohms', 'ax', 'ay', 'az', 'gx', 'gy', 'gz'];
+  return s && required.every(key => Number.isFinite(s[key]));
 }
 
 function stamp() {
@@ -121,6 +130,23 @@ const server = http.createServer((req, res) => {
     clients.add(res); req.on('close', () => clients.delete(res)); return;
   }
   if (url.pathname === '/api/status') return json(res, 200, { connected: !!serial, port: serialPath, recording: recording ? recording.name : null, last: lastSample });
+  if (url.pathname === '/api/samples' && req.method === 'POST') {
+    let body = '', tooLarge = false;
+    req.on('data', chunk => { if (body.length + chunk.length > 262144) tooLarge = true; else body += chunk; });
+    req.on('end', () => {
+      if (tooLarge) return json(res, 413, { error: 'sample batch too large' });
+      try {
+        const payload = JSON.parse(body || '{}');
+        const samples = Array.isArray(payload.samples) ? payload.samples.slice(0, 100) : [];
+        const sourceId = String(payload.sourceId || '').slice(0, 100);
+        if (!sourceId || !samples.length || samples.some(s => !validSample(s))) return json(res, 400, { error: 'invalid sample batch' });
+        if (serial) return json(res, 200, { accepted: 0, source: 'usb' });
+        for (const sample of samples) acceptSample(sample, sourceId);
+        return json(res, 200, { accepted: samples.length, source: 'bluetooth' });
+      } catch (error) { return json(res, 400, { error: error.message }); }
+    });
+    return;
+  }
   if (url.pathname === '/api/sessions' && req.method === 'GET') return json(res, 200, listSessions());
   if (url.pathname.startsWith('/api/sessions/') && url.pathname.endsWith('/meta')) {
     const name = decodeURIComponent(url.pathname.slice('/api/sessions/'.length, -'/meta'.length));

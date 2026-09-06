@@ -1,6 +1,6 @@
 # FORM Lab
 
-Bench app for the FORM stretch sensor. Reads a XIAO nRF52840 Sense over USB, shows live cord resistance and motion, records labelled sessions to CSV, and charts every recording with rep detection.
+Bench app for the FORM stretch sensor. Reads a XIAO nRF52840 Sense over USB or Bluetooth, shows live cord resistance and motion, records labelled sessions to CSV, and charts every recording with rep detection.
 
 ![v1 prototype: the XIAO on a mini breadboard strapped to the black elastic band, resistor and jumper wires in place, USB cable to the laptop](docs/images/v1-prototype.jpg)
 
@@ -29,22 +29,33 @@ The XIAO needs the FORM program on it. No Arduino IDE needed.
 
 1. Plug the XIAO into the laptop with a USB-C cable that carries data (some charging cables don't).
 2. Find the tiny RST button next to the USB port. Tap it twice quickly. A drive called **XIAO-SENSE** appears on the desktop.
-3. Drag `firmware/form_logger.uf2` from this folder onto that drive.
+3. Drag `firmware/form_logger_ble.uf2` from this folder onto that drive.
 4. The drive disappears by itself and the Mac may complain "Disk Not Ejected Properly". That's normal. The board is now running the program.
 5. In FORM Lab the dot in the top right turns green.
 
 If the board's LED is blinking red, it's in rescue mode and the program isn't running: tap RST **once**.
+
+## Use Bluetooth without a USB data connection
+
+1. Power the XIAO from its battery and start FORM Lab with `npm start` on the laptop.
+2. Open http://localhost:4000 in Chrome or Edge.
+3. Click **Connect Bluetooth** in the top-right corner.
+4. Select **FORM Band** in the browser's device picker.
+5. Wait for the status to read **FORM Band · Bluetooth**. Live resistance and motion now arrive directly in the browser; Record, Mark, session history, and CSV download continue to use the local FORM Lab server.
+
+The browser asks you to choose the device because Web Bluetooth access must begin with a user action. Bluetooth requires a supported browser on `localhost` or HTTPS. If the button says **Bluetooth unavailable**, use a current Chrome or Edge window rather than Safari or Firefox.
 
 ## Wiring
 
 ```
 XIAO 3V3 ──[ rubber cord, alligator clip each end ]──┬── XIAO A0
                                                      │
-                                                 [ 10 kΩ ]
+                                                  [ 1 kΩ ]
                                                      │
                                                 XIAO GND
 ```
 Cord on the 3V3 side, resistor on the GND side. Use 3V3, never 5V.
+The firmware is calibrated for the installed 1 kΩ fixed resistor.
 
 ## Recording
 
@@ -66,8 +77,8 @@ git push
 - `docs/recording-protocol.html` — what to record and how to label it: setup rule, label fields, the eight exercise classes, clean sets, the messy gym session script.
 
 ## What's in here
-- `server.js` — Node server. `serialport` is the only dependency. Serial in, server-sent events out at `/stream`, REST under `/api`.
-- `public/index.html` — the page. Canvas charts, no framework.
+- `server.js` — Node server. Accepts USB serial or browser-relayed BLE sample batches, sends server-sent events at `/stream`, and exposes REST under `/api`.
+- `public/index.html` — the page. Direct Web Bluetooth receiver and canvas charts, no framework.
 - `sessions/` — one `.csv` per recording (`t_ms,raw,volts,ohms,ax,ay,az,gx,gy,gz` at 20 Hz) and a `.json` beside it with the labels and marks.
 - `firmware/form_logger.uf2` — the board program, drag-and-drop installable. Source in `firmware/form_logger/form_logger.ino` (build with the Arduino board "XIAO nRF52840 Sense (No Updates)" and the "Seeed Arduino LSM6DS3" library).
 
