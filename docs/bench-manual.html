@@ -537,6 +537,50 @@
   </section>
 
   <section>
+    <div class="step">Update · Sept 6 · a cleaner connection</div>
+    <h2>Skip the alligator clips. Push the wire into the cord.</h2>
+    <p>The alligator clips were only ever a bench shortcut. For the wearable we first sewed the clips onto the band, then Suna tried something better and it just worked: cut the cord, strip a jumper wire, and push the bare wire straight into the soft end of the conductive rubber. The rubber grips it and the metal touches the conductive core. No clip at all. It reads on the graph exactly like the clipped version.</p>
+    <figure>
+      <svg viewBox="0 0 700 210" role="img" aria-label="Left: the old way, an alligator clip biting the cord end. Right: Suna's way, a stripped jumper wire pushed directly into the end of the conductive rubber cord, gripped by the rubber, no clip." xmlns="http://www.w3.org/2000/svg">
+        <!-- OLD: clip -->
+        <text x="30" y="28" class="svg-label" font-weight="700">before: alligator clip</text>
+        <path d="M40 90 L150 90" stroke="#2B2B2B" stroke-width="14" stroke-linecap="round"/>
+        <path d="M150 76 L176 70 L172 82 Z" fill="var(--iron)"/><path d="M150 104 L176 110 L172 98 Z" fill="var(--iron)"/>
+        <path d="M176 70 L176 110" stroke="var(--iron)" stroke-width="4"/>
+        <path d="M176 90 L250 90" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/>
+        <text x="150" y="150" class="svg-label svg-muted" text-anchor="middle">cord</text>
+        <text x="205" y="150" class="svg-label svg-muted" text-anchor="middle">clip + wire</text>
+        <text x="145" y="175" class="svg-label svg-muted" text-anchor="middle">bulky, pops off when you move</text>
+        <!-- divider -->
+        <line x1="360" y1="40" x2="360" y2="180" stroke="var(--rule)" stroke-width="1"/>
+        <!-- NEW: direct insert -->
+        <text x="400" y="28" class="svg-label svg-hot" font-weight="700">now: wire pushed into the cord</text>
+        <path d="M400 90 L520 90" stroke="#2B2B2B" stroke-width="16" stroke-linecap="round"/>
+        <!-- cut end hole -->
+        <ellipse cx="520" cy="90" rx="5" ry="8" fill="var(--pcb-deep)"/>
+        <!-- stripped wire going in -->
+        <path d="M514 90 L560 90" stroke="var(--solder-hi)" stroke-width="3"/>
+        <path d="M560 90 L640 90" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/>
+        <text x="470" y="150" class="svg-label svg-muted" text-anchor="middle">conductive rubber</text>
+        <text x="600" y="150" class="svg-label svg-muted" text-anchor="middle">jumper wire</text>
+        <text x="530" y="72" class="svg-label svg-hot" text-anchor="middle">bare tip inside</text>
+        <text x="520" y="192" class="svg-label svg-muted" text-anchor="middle">flat, light, sews into the band, nothing to pop off</text>
+      </svg>
+      <figcaption>Both make the same electrical contact. The direct wire is flatter, lighter, and has one fewer part per end to work loose, which matters once it's moving on your arm.</figcaption>
+    </figure>
+    <ol>
+      <li>Cut the cord to the length you want between the two contact points.</li>
+      <li>Strip about 1 cm of insulation off the jumper wire so bare metal shows.</li>
+      <li>Push the bare metal firmly into the cut end of the cord, twisting slightly, until it grips.</li>
+      <li>Do the same at the other end with the second wire.</li>
+      <li>Optional but recommended: slide a short piece of your heat-shrink tubing over each joint and shrink it, so the wire can't slide out and the joint is protected.</li>
+      <li>Push the two wires into the A0 row and the 3V3 row as before. The resistor still bridges A0 to GND.</li>
+    </ol>
+    <div class="callout stop"><strong>Why it's better for the band:</strong> the clips were the biggest, loosest part of the whole thing. A wire sewn into the cord and stitched to the elastic has nothing to snag, nothing to detach mid-rep, and lies flat under a sleeve.</div>
+    <div class="callout"><strong>Watch for:</strong> if the reading gets noisy, the wire has worked a little loose. Push it back in, or add the heat-shrink. A dab of conductive glue is the permanent version, later.</div>
+  </section>
+
+  <section>
     <div class="step">Step 9 · Plug in and read</div>
     <h2>The numbers appear on the Mac</h2>
     <p>Plug the XIAO into the Mac with the USB-C cable and tell me "ready". I upload the logging program from here. Then open Arduino IDE, go to Tools, then Serial Plotter, and set the speed in the corner to 115200. You'll see this:</p>
