@@ -58,7 +58,7 @@
   table.data { border-collapse: collapse; font-family: "JetBrains Mono", Menlo, monospace; font-size: 13px; font-variant-numeric: tabular-nums; }
   table.data th, table.data td { text-align: right; padding: 3px 14px 3px 0; border-bottom: 1px solid var(--rule); }
   details summary { cursor: pointer; color: var(--muted); margin: 8px 0; }
-  code { font-family: "JetBrains Mono", Menlo, monospace; font-size: 0.9em; }
+  code, .mono { font-family: "JetBrains Mono", Menlo, monospace; font-size: 0.9em; }
 </style>
 
 <main>
@@ -764,9 +764,58 @@
     <ol>
       <li><strong>Firmware.</strong> The board advertises itself over Bluetooth and streams the same ten numbers, 20 times a second. Software only. It can be tested while the board is still on USB power.</li>
       <li><strong>FORM Lab.</strong> A "Connect over Bluetooth" button next to the USB status. Chrome can talk to Bluetooth devices directly from the page, so nothing else changes.</li>
-      <li><strong>Battery.</strong> The XIAO has a built-in charger and two pads on its underside marked for a battery. Buy a small rechargeable lithium battery, 3.7 V, 300 to 500 mAh, about the size of a stick of gum, with two bare wires or a small plug you can cut off. Solder the two wires to the pads: two more dots like the headers. It charges whenever the board is plugged into USB.</li>
+      <li><strong>Battery.</strong> The XIAO has a built-in charger and two pads on its underside marked <span class="mono">B+</span> and <span class="mono">B-</span>. It charges whenever the board is plugged into USB, so no separate charger is needed. See the shopping list and the wiring below.</li>
       <li><strong>Leave the breadboard.</strong> Short wires soldered to A0, 3V3, and GND, the cord and resistor clipped to those. Same circuit, small enough to sit in the band with the battery.</li>
     </ol>
+    <h2 style="margin-top:34px">What to buy for the battery</h2>
+    <p>Two parts. The board has the charger built in, so that's all. Under 20 dollars total.</p>
+    <div style="overflow-x:auto"><table class="data" style="font-size:14px">
+      <thead><tr><th style="text-align:left">part</th><th style="text-align:left">what to get</th></tr></thead>
+      <tbody>
+        <tr><td>LiPo battery</td><td>Single-cell 3.7&nbsp;V, ~400&nbsp;mAh, with a JST-PH 2.0&nbsp;mm plug and built-in protection (PCM). Size code 502035 is 5&nbsp;&times;&nbsp;20&nbsp;&times;&nbsp;35&nbsp;mm, thin enough for the band.</td></tr>
+        <tr><td>JST-PH 2.0 pigtail</td><td>The mating connector with loose wires, to solder to the board. Kits come with both male and female halves so one of them fits the battery.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="hint">Not needed: a separate charger (the USB-C port charges it), and anything for Bluetooth itself (the antenna is on the board and the firmware is done).</p>
+
+    <h2 style="margin-top:30px">Fitting the battery</h2>
+    <figure>
+      <svg viewBox="0 0 700 200" role="img" aria-label="The battery's JST plug connects to a pigtail whose two bare wires are soldered to the XIAO's B+ and B- pads. A note warns to check polarity with a multimeter first." xmlns="http://www.w3.org/2000/svg">
+        <rect x="30" y="70" width="120" height="60" rx="6" fill="#2B2B2B"/>
+        <text x="90" y="105" class="svg-label" text-anchor="middle" fill="var(--solder-hi)">battery</text>
+        <text x="90" y="150" class="svg-label svg-muted" text-anchor="middle">3.7 V 400 mAh</text>
+        <!-- battery plug -->
+        <rect x="150" y="88" width="16" height="24" rx="2" fill="var(--gold)"/>
+        <!-- pigtail plug -->
+        <rect x="170" y="88" width="16" height="24" rx="2" fill="var(--iron)"/>
+        <text x="168" y="70" class="svg-label" text-anchor="middle">JST plug</text>
+        <!-- pigtail wires -->
+        <path d="M186 96 L300 96" stroke="#C0392B" stroke-width="3"/>
+        <path d="M186 104 L300 104" stroke="var(--ink-2)" stroke-width="3"/>
+        <text x="243" y="86" class="svg-label svg-hot" text-anchor="middle">+ (check with meter)</text>
+        <text x="243" y="126" class="svg-label svg-muted" text-anchor="middle">−</text>
+        <!-- board -->
+        <rect x="300" y="60" width="150" height="80" rx="10" fill="var(--pcb)"/>
+        <circle cx="316" cy="96" r="7" fill="var(--gold)"/><circle cx="316" cy="112" r="7" fill="var(--gold)"/>
+        <text x="336" y="100" class="svg-mono" fill="var(--solder-hi)">B+</text>
+        <text x="336" y="116" class="svg-mono" fill="var(--solder-hi)">B−</text>
+        <text x="375" y="150" class="svg-label svg-muted" text-anchor="middle">XIAO underside</text>
+        <text x="480" y="86" class="svg-label" font-weight="700">Solder the pigtail's</text>
+        <text x="480" y="102" class="svg-label">+ wire to B+,</text>
+        <text x="480" y="118" class="svg-label">− wire to B−.</text>
+        <text x="480" y="150" class="svg-label svg-hot">Two dots, like the headers.</text>
+      </svg>
+      <figcaption>The battery plugs into the pigtail; the pigtail's two wires solder to the board. After this it charges through USB-C like normal.</figcaption>
+    </figure>
+    <ol>
+      <li>Try plugging each connector from the kit into the battery. The one that clicks in is the mate; solder that one, set the other aside.</li>
+      <li><strong>Check polarity first.</strong> Plug your chosen connector into the battery, touch the multimeter to the two loose wires, and find which reads positive. Generic batteries sometimes wire the plug the opposite way, so never assume.</li>
+      <li>Solder the positive wire to <span class="mono">B+</span> and the negative wire to <span class="mono">B-</span> on the board's underside. Two dots, same move as the headers.</li>
+      <li>Flash the Bluetooth firmware (<span class="mono">firmware/form_logger_ble.uf2</span>) the drag-and-drop way: double-tap RST, drop the file on the XIAO-SENSE drive.</li>
+      <li>Plug in the battery. In FORM Lab, connect over Bluetooth instead of USB. Charge by plugging the board into USB-C.</li>
+    </ol>
+    <div class="callout"><strong>Battery safety:</strong> a LiPo can catch fire if punctured, crushed, or shorted. This one has built-in protection, but still don't fold or pierce it, and buy from a seller with real reviews.</div>
+
     <div class="callout stop"><strong>Timing:</strong> keep USB for the data sprint with Suna. It's reliable and never runs flat. Order the battery now, the Bluetooth firmware and button get built in the meantime, and switching over is one afternoon once the recordings are in.</div>
   </section>
 </main>
