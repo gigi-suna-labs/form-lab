@@ -13,7 +13,7 @@ The `sessions/` folder is the shared dataset. Everyone who records commits and p
 1. Install Node.js if you don't have it: https://nodejs.org (the LTS version). Check with `node -v` in Terminal.
 2. Get the code:
    ```
-   git clone https://github.com/gigialc/form-lab.git
+   git clone https://github.com/gigi-suna-labs/form-lab.git
    cd form-lab
    npm install
    ```
