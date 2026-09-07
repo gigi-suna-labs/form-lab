@@ -675,41 +675,46 @@
     <h2>Put the cord on your arm and do a curl</h2>
     <p>This is the test the whole idea depends on. A muscle gets thicker when it contracts. If the band stretches with it, the graph should show one bump per rep. Prep steps 1 to 3 before you sit down with the laptop.</p>
     <figure>
-      <svg viewBox="0 0 700 320" role="img" aria-label="An elastic band wrapped around an upper arm with hook-and-loop closing it. A 4-inch piece of rubber cord lies along the front of the arm, both ends taped to the band, with alligator clips on each end also taped down. Two clip leads run down to the breadboard on the table." xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 700 320" role="img" aria-label="An elastic band around the upper arm, closed with sewn hook-and-loop. A piece of conductive rubber cord is stitched along the front of the arm. A jumper wire is pushed directly into each end of the cord, no clips. The two wires run down to the breadboard on the table." xmlns="http://www.w3.org/2000/svg">
         <!-- arm -->
         <path d="M60 200 Q120 90 260 92 Q400 94 470 200 L470 300 L60 300 Z" fill="var(--panel)" stroke="var(--rule)" stroke-width="2"/>
         <text x="265" y="290" class="svg-label svg-muted" text-anchor="middle">upper arm, bicep facing you</text>
         <!-- band -->
         <path d="M80 190 Q265 150 450 190 L450 230 Q265 190 80 230 Z" fill="#2B2B2B"/>
-        <rect x="392" y="182" width="52" height="46" rx="4" fill="var(--ink)" stroke="var(--solder)" stroke-width="1.5" stroke-dasharray="3 2"/>
-        <text x="418" y="250" class="svg-label" text-anchor="middle">hook-and-loop</text>
+        <rect x="392" y="182" width="52" height="46" rx="4" fill="var(--ink)" stroke="var(--solder)" stroke-width="1.5"/>
+        <text x="418" y="250" class="svg-label" text-anchor="middle">velcro, sewn</text>
         <!-- cord along band -->
-        <path d="M150 196 Q265 174 380 196" fill="none" stroke="var(--hot)" stroke-width="7" stroke-linecap="round"/>
-        <!-- tape anchors -->
-        <rect x="132" y="180" width="36" height="30" rx="3" fill="var(--gold)" opacity="0.85" transform="rotate(-8 150 195)"/>
-        <rect x="362" y="180" width="36" height="30" rx="3" fill="var(--gold)" opacity="0.85" transform="rotate(8 380 195)"/>
-        <text x="150" y="164" class="svg-label" text-anchor="middle">tape</text>
-        <text x="380" y="164" class="svg-label" text-anchor="middle">tape</text>
-        <text x="265" y="150" class="svg-label svg-hot" text-anchor="middle" font-weight="700">cord, 4 in, middle left free</text>
-        <!-- clips -->
-        <path d="M128 200 L108 214 L112 226 L132 212 Z" fill="var(--iron)"/>
-        <path d="M402 200 L422 214 L418 226 L398 212 Z" fill="var(--iron)"/>
+        <path d="M150 196 Q265 176 380 196" fill="none" stroke="var(--hot)" stroke-width="8" stroke-linecap="round"/>
+        <!-- stitches holding cord to band -->
+        <g stroke="var(--solder-hi)" stroke-width="1.6">
+          <path d="M196 182 L204 196"/><path d="M204 182 L196 196"/>
+          <path d="M330 182 L338 196"/><path d="M338 182 L330 196"/>
+        </g>
+        <text x="265" y="150" class="svg-label svg-hot" text-anchor="middle" font-weight="700">conductive cord, stitched down</text>
+        <text x="265" y="166" class="svg-label svg-muted" text-anchor="middle">stitches anchor it so it stretches with the band</text>
+        <!-- wires pushed into each cord end (no clips) -->
+        <line x1="150" y1="196" x2="128" y2="206" stroke="var(--solder-hi)" stroke-width="3"/>
+        <line x1="380" y1="196" x2="402" y2="206" stroke="var(--solder-hi)" stroke-width="3"/>
+        <text x="120" y="188" class="svg-label" text-anchor="middle">wire pushed</text>
+        <text x="120" y="202" class="svg-label" text-anchor="middle">into the end</text>
+        <text x="416" y="188" class="svg-label" text-anchor="middle">wire pushed in</text>
+        <text x="416" y="176" class="svg-label svg-muted" text-anchor="middle">no clips</text>
         <!-- leads down to breadboard -->
-        <path d="M110 222 Q90 300 560 300 Q600 300 600 270" fill="none" stroke="var(--iron)" stroke-width="3"/>
-        <path d="M420 222 Q440 280 570 285 Q612 285 612 270" fill="none" stroke="var(--iron)" stroke-width="3"/>
+        <path d="M128 206 Q90 300 560 300 Q600 300 600 270" fill="none" stroke="var(--gold)" stroke-width="3"/>
+        <path d="M402 206 Q440 280 570 285 Q612 285 612 270" fill="none" stroke="var(--gold)" stroke-width="3"/>
         <rect x="540" y="230" width="140" height="44" rx="4" fill="var(--board-blue)"/>
         <rect x="585" y="222" width="50" height="34" rx="6" fill="var(--pcb)"/>
         <text x="610" y="296" class="svg-label" text-anchor="middle">breadboard on the table</text>
         <text x="610" y="312" class="svg-label svg-muted" text-anchor="middle">leave it wired as it is</text>
-        <text x="40" y="40" class="svg-label" font-weight="700">Both cord ENDS anchored to the band, so the band stretching = the cord stretching.</text>
-        <text x="40" y="58" class="svg-label svg-muted">Clips taped down too, so a curl can't yank them off. Leads long and slack.</text>
+        <text x="40" y="40" class="svg-label" font-weight="700">Cord stitched to the band at both ends, so the band stretching = the cord stretching.</text>
+        <text x="40" y="58" class="svg-label svg-muted">A jumper wire pushed straight into each cord end. No clips, nothing to pop off. Leads long and slack.</text>
       </svg>
-      <figcaption>The band does the stretching, the cord rides along and reports it. If the cord isn't anchored at both ends, the band stretches and the cord just slides.</figcaption>
+      <figcaption>The band does the stretching, the cord rides along and reports it. Stitched down at both ends, with a wire pushed into each end instead of a clip: flatter, lighter, and nothing to yank loose mid-rep.</figcaption>
     </figure>
     <ol>
       <li><strong>The band is made.</strong> A strip of the black elastic with hook-and-loop (velcro) sewn to the ends so it wraps the upper arm and closes. Sewn, not stuck, so it survives the pull of every rep. Reuse it each session.</li>
-      <li><strong>Attach the cord.</strong> Cut a fresh 4-inch piece of cord. Tape or stitch each end to the elastic, 4 inches apart, middle free. Clip an alligator clip on each cord end and tape the clips down too.</li>
-      <li><strong>Wear it.</strong> Band around the bicep, snug but comfortable, cord along the front where the muscle bulges. Clip leads hang down to the breadboard. Sit close to the laptop, keep slack in the leads.</li>
+      <li><strong>Attach the cord.</strong> Cut a fresh 4-inch piece of cord. Push a stripped jumper wire into each end (the direct-wire method above), then stitch each end to the elastic about 4 inches apart, middle free. No clips.</li>
+      <li><strong>Wear it.</strong> Band around the bicep, snug but comfortable, cord along the front where the muscle bulges. The two wires hang down to the breadboard. Sit close to the laptop, keep slack in the leads.</li>
       <li><strong>Record.</strong> Plug in, say "ready", I start a 60-second recording. Hold still 5 seconds, do 5 slow curls, hold still.</li>
       <li><strong>Read it together.</strong> We're looking for 5 bumps. Five bumps means FORM's core idea works on a real arm.</li>
     </ol>
