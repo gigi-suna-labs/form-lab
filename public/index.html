@@ -197,29 +197,32 @@
 <script>
 // ---------- analysis: moving baseline, rep detection, time under tension ----------
 function analyze(rows) {
-  // rows: [{t, ohms}] seconds / ohms. Baseline = 10th percentile of trailing 8 s; rep = excursion above baseline + max(60, 8%).
-  const base = new Array(rows.length), win = [];
-  for (let i = 0; i < rows.length; i++) {
-    win.push(rows[i]);
-    while (win.length && rows[i].t - win[0].t > 8) win.shift();
-    const s = win.map(r => r.ohms).sort((a, b) => a - b);
-    base[i] = s[Math.floor(s.length * 0.1)];
-  }
-  let reps = 0, above = false, tut = 0, lastT = rows.length ? rows[0].t : 0, peaks = [], peakV = 0, peakT = 0, lastRepT = -9;
-  for (let i = 0; i < rows.length; i++) {
-    const th = base[i] + Math.max(60, base[i] * 0.08);
+  const n = rows.length;
+  if (!n) return { base: [], reps: 0, tut: 0, peaks: [], rest: 0, max: 0 };
+  // 1) smooth: 0.35 s trailing mean, to kill jitter that used to be miscounted
+  const sm = new Array(n); { let buf = [];
+    for (let i = 0; i < n; i++) { buf.push(rows[i]); while (buf.length && rows[i].t - buf[0].t > 0.35) buf.shift(); sm[i] = buf.reduce((a, r) => a + r.ohms, 0) / buf.length; } }
+  // 2) moving baseline: 10th percentile of the smoothed signal over the trailing 8 s (follows rubber relaxation)
+  const base = new Array(n); { let win = [];
+    for (let i = 0; i < n; i++) { win.push({ t: rows[i].t, v: sm[i] }); while (win.length && rows[i].t - win[0].t > 8) win.shift(); const srt = win.map(w => w.v).sort((a, b) => a - b); base[i] = srt[Math.floor(srt.length * 0.1)]; } }
+  // 3) rep = one excursion that crosses a HIGH line and returns below a LOW line (hysteresis),
+  //    at least GAP apart and MINDUR long. Params tuned against our labelled 4/5/5/5-rep sets.
+  const HI_ABS = 30, HI_PCT = 0.04, LO_ABS = 12, LO_PCT = 0.015, GAP = 0.8, MINDUR = 0.3;
+  let reps = 0, armed = true, pv = 0, pt = 0, ps = 0, last = -9, tut = 0, lastT = rows[0].t;
+  const peaks = [];
+  for (let i = 0; i < n; i++) {
+    const hi = base[i] + Math.max(HI_ABS, base[i] * HI_PCT);
+    const lo = base[i] + Math.max(LO_ABS, base[i] * LO_PCT);
     const dt = rows[i].t - lastT; lastT = rows[i].t;
-    if (rows[i].ohms > th) {
-      tut += dt;
-      if (!above) { above = true; peakV = 0; }
-      if (rows[i].ohms > peakV) { peakV = rows[i].ohms; peakT = rows[i].t; }
-    } else if (above) {
-      above = false;
-      if (peakT - lastRepT > 0.8) { reps++; peaks.push({ t: peakT, v: peakV }); lastRepT = peakT; }
+    if (sm[i] > hi) tut += dt;
+    if (armed && sm[i] > hi) { armed = false; pv = sm[i]; pt = rows[i].t; ps = rows[i].t; }
+    else if (!armed) {
+      if (sm[i] > pv) { pv = sm[i]; pt = rows[i].t; }
+      if (sm[i] < lo) { armed = true; if (pt - last >= GAP && rows[i].t - ps >= MINDUR) { reps++; peaks.push({ t: pt, v: pv }); last = pt; } }
     }
   }
-  const restVals = rows.map(r => r.ohms).sort((a, b) => a - b);
-  return { base, reps, tut, peaks, rest: restVals.length ? restVals[Math.floor(restVals.length * 0.1)] : 0, max: restVals.length ? restVals[restVals.length - 1] : 0 };
+  const rv = rows.map(r => r.ohms).sort((a, b) => a - b);
+  return { base, reps, tut, peaks, rest: rv[Math.floor(rv.length * 0.1)], max: rv[rv.length - 1] };
 }
 
 // ---------- chart ----------
