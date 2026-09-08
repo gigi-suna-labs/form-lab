@@ -537,50 +537,44 @@
   </section>
 
   <section>
-    <div class="step">Update · Sept 6 · a cleaner connection</div>
-    <h2>Skip the alligator clips. Wrap the wire around the cord.</h2>
-    <p>The alligator clips were only ever a bench shortcut. For the wearable we first sewed the clips onto the band, then Suna tried something better and it just worked: strip a jumper wire and wrap the bare copper tightly around the end of the conductive rubber cord, several turns. The cord conducts on its surface, so the coil of metal makes contact all along the wrap. No clip at all. It reads on the graph exactly like the clipped version.</p>
+    <div class="step">Update · Sept 7 · connection method</div>
+    <h2>Alligator clips won. Keep them.</h2>
+    <p>We tried skipping the clips: stripping a jumper wire and wrapping the bare copper around the end of the cord. On the bench it looked fine, but in use it was a disaster. The wrap kept loosening, and the reading drifted and dropped out. The alligator clip biting the cord end is the most reliable connection we have, so that stays the design.</p>
     <figure>
-      <svg viewBox="0 0 700 210" role="img" aria-label="Left: the old way, an alligator clip biting the cord end. Right: Suna's way, the bare end of a jumper wire wrapped in tight coils around the end of the conductive rubber cord, no clip." xmlns="http://www.w3.org/2000/svg">
-        <!-- OLD: clip -->
-        <text x="30" y="28" class="svg-label" font-weight="700">before: alligator clip</text>
-        <path d="M40 90 L150 90" stroke="#2B2B2B" stroke-width="14" stroke-linecap="round"/>
-        <path d="M150 76 L176 70 L172 82 Z" fill="var(--iron)"/><path d="M150 104 L176 110 L172 98 Z" fill="var(--iron)"/>
-        <path d="M176 70 L176 110" stroke="var(--iron)" stroke-width="4"/>
-        <path d="M176 90 L250 90" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/>
-        <text x="150" y="150" class="svg-label svg-muted" text-anchor="middle">cord</text>
-        <text x="205" y="150" class="svg-label svg-muted" text-anchor="middle">clip + wire</text>
-        <text x="145" y="175" class="svg-label svg-muted" text-anchor="middle">bulky, pops off when you move</text>
+      <svg viewBox="0 0 700 200" role="img" aria-label="Left, kept: an alligator clip biting the cord end, marked good. Right, rejected: bare wire coiled around the cord end, marked unreliable." xmlns="http://www.w3.org/2000/svg">
+        <!-- KEEP: clip -->
+        <text x="30" y="26" class="svg-label" text-anchor="start" font-weight="700" fill="var(--good)">keep: alligator clip</text>
+        <path d="M40 96 L150 96" stroke="#2B2B2B" stroke-width="14" stroke-linecap="round"/>
+        <path d="M150 82 L176 76 L172 88 Z" fill="var(--iron)"/><path d="M150 110 L176 116 L172 104 Z" fill="var(--iron)"/>
+        <path d="M176 76 L176 116" stroke="var(--iron)" stroke-width="4"/>
+        <path d="M176 96 L250 96" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/>
+        <text x="140" y="150" class="svg-label svg-muted" text-anchor="middle">clip bites the cord, wire to the breadboard</text>
+        <text x="140" y="168" class="svg-label" text-anchor="middle" fill="var(--good)">steady, reliable</text>
         <!-- divider -->
-        <line x1="360" y1="40" x2="360" y2="180" stroke="var(--rule)" stroke-width="1"/>
-        <!-- NEW: direct insert -->
-        <text x="400" y="28" class="svg-label svg-hot" font-weight="700">now: wire wrapped around the cord</text>
-        <path d="M400 90 L560 90" stroke="#2B2B2B" stroke-width="16" stroke-linecap="round"/>
-        <!-- coil of bare wire wrapped around the cord end -->
-        <g stroke="var(--solder-hi)" stroke-width="2.5" fill="none">
-          <path d="M508 82 Q516 74 524 82 Q532 90 524 98 Q516 106 508 98"/>
-          <path d="M520 82 Q528 74 536 82 Q544 90 536 98 Q528 106 520 98"/>
-          <path d="M532 82 Q540 74 548 82 Q556 90 548 98 Q540 106 532 98"/>
+        <line x1="360" y1="34" x2="360" y2="176" stroke="var(--rule)" stroke-width="1"/>
+        <!-- REJECT: wrap -->
+        <g opacity="0.55">
+          <path d="M400 96 L560 96" stroke="#2B2B2B" stroke-width="16" stroke-linecap="round"/>
+          <g stroke="var(--solder-hi)" stroke-width="2.5" fill="none">
+            <path d="M508 88 Q516 80 524 88 Q532 96 524 104 Q516 112 508 104"/>
+            <path d="M520 88 Q528 80 536 88 Q544 96 536 104 Q528 112 520 104"/>
+            <path d="M532 88 Q540 80 548 88 Q556 96 548 104 Q540 112 532 104"/>
+          </g>
+          <path d="M552 94 L640 94" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/>
         </g>
-        <!-- wire leading away -->
-        <path d="M552 88 L640 88" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/>
-        <text x="455" y="150" class="svg-label svg-muted" text-anchor="middle">conductive rubber</text>
-        <text x="605" y="150" class="svg-label svg-muted" text-anchor="middle">jumper wire</text>
-        <text x="528" y="66" class="svg-label svg-hot" text-anchor="middle">bare copper coiled on</text>
-        <text x="520" y="192" class="svg-label svg-muted" text-anchor="middle">flat, light, sews into the band, nothing to pop off</text>
+        <text x="400" y="26" class="svg-label" text-anchor="start" font-weight="700" fill="var(--bad)">rejected: wire wrapped on</text>
+        <line x1="470" y1="70" x2="560" y2="120" stroke="var(--bad)" stroke-width="3"/>
+        <line x1="560" y1="70" x2="470" y2="120" stroke="var(--bad)" stroke-width="3"/>
+        <text x="520" y="168" class="svg-label" text-anchor="middle" fill="var(--bad)">loosened, drifted, dropped out</text>
       </svg>
-      <figcaption>Both make the same electrical contact. The wrapped wire is flatter, lighter, and has one fewer part per end to work loose, which matters once it's moving on your arm.</figcaption>
+      <figcaption>The wrap-around idea was flatter, but it wouldn't hold contact through movement. Clips it is.</figcaption>
     </figure>
     <ol>
       <li>Cut the cord to the length you want between the two contact points.</li>
-      <li>Strip about 1.5 cm of insulation off the jumper wire so a good length of bare copper shows.</li>
-      <li>Lay the bare copper against the end of the cord and wrap it around in tight coils, pressing firmly, so the metal bites into the rubber surface. More turns means more contact and a steadier reading.</li>
-      <li>Do the same at the other end with the second wire.</li>
-      <li>Recommended: slide a short piece of your heat-shrink tubing over each coil and shrink it, so the wrap can't loosen and the joint is protected.</li>
-      <li>Push the two wires into the A0 row and the 3V3 row as before. The resistor still bridges A0 to GND.</li>
+      <li>Clip an alligator clip onto each end of the cord, the same way you did with the meter.</li>
+      <li>Clip the other jaw of each lead onto a jumper wire, and push those wires into the A0 row and the 3V3 row. The resistor still bridges A0 to GND.</li>
     </ol>
-    <div class="callout stop"><strong>Why it's better for the band:</strong> the clips were the biggest, loosest part of the whole thing. A wire sewn into the cord and stitched to the elastic has nothing to snag, nothing to detach mid-rep, and lies flat under a sleeve.</div>
-    <div class="callout"><strong>Watch for:</strong> if the reading gets noisy, the coil has loosened. Wrap it tighter or add more turns, then heat-shrink over it. A dab of conductive glue under the wrap is the permanent version, later.</div>
+    <div class="callout stop"><strong>For the wearable:</strong> tape or stitch each clip down to the band so it can't shift or twist as you move, and slip heat-shrink over the clip-to-wire joint. That fixes the one weakness of clips (getting knocked loose) without giving up their reliable grip.</div>
   </section>
 
   <section>
@@ -696,14 +690,12 @@
         <text x="265" y="150" class="svg-label svg-hot" text-anchor="middle" font-weight="700">conductive cord, stitched down</text>
         <text x="265" y="166" class="svg-label svg-muted" text-anchor="middle">stitches anchor it so it stretches with the band</text>
         <!-- wires pushed into each cord end (no clips) -->
-        <g stroke="var(--solder-hi)" stroke-width="1.8" fill="none">
-          <path d="M142 190 q6 -5 10 2 q4 7 -2 11"/><path d="M148 190 q6 -5 10 2 q4 7 -2 11"/>
-          <path d="M378 190 q6 -5 10 2 q4 7 -2 11"/><path d="M384 190 q6 -5 10 2 q4 7 -2 11"/>
-        </g>
-        <text x="120" y="188" class="svg-label" text-anchor="middle">wire wrapped</text>
-        <text x="120" y="202" class="svg-label" text-anchor="middle">around the end</text>
-        <text x="416" y="188" class="svg-label" text-anchor="middle">wire wrapped on</text>
-        <text x="416" y="176" class="svg-label svg-muted" text-anchor="middle">no clips</text>
+        <path d="M150 196 L130 206 L134 216 L154 208 Z" fill="var(--iron)"/>
+        <path d="M380 196 L400 206 L396 216 L376 208 Z" fill="var(--iron)"/>
+        <text x="118" y="188" class="svg-label" text-anchor="middle">alligator</text>
+        <text x="118" y="202" class="svg-label" text-anchor="middle">clip</text>
+        <text x="416" y="188" class="svg-label" text-anchor="middle">alligator clip</text>
+        
         <!-- leads down to breadboard -->
         <path d="M128 206 Q90 300 560 300 Q600 300 600 270" fill="none" stroke="var(--gold)" stroke-width="3"/>
         <path d="M402 206 Q440 280 570 285 Q612 285 612 270" fill="none" stroke="var(--gold)" stroke-width="3"/>
@@ -712,13 +704,13 @@
         <text x="610" y="296" class="svg-label" text-anchor="middle">breadboard on the table</text>
         <text x="610" y="312" class="svg-label svg-muted" text-anchor="middle">leave it wired as it is</text>
         <text x="40" y="40" class="svg-label" font-weight="700">Cord stitched to the band at both ends, so the band stretching = the cord stretching.</text>
-        <text x="40" y="58" class="svg-label svg-muted">A jumper wire wrapped tightly around each cord end. No clips, nothing to pop off. Leads long and slack.</text>
+        <text x="40" y="58" class="svg-label svg-muted">An alligator clip on each cord end, taped down so it can&rsquo;t shift. Leads long and slack.</text>
       </svg>
-      <figcaption>The band does the stretching, the cord rides along and reports it. Stitched down at both ends, with a wire wrapped around each end instead of a clip: flatter, lighter, and nothing to yank loose mid-rep.</figcaption>
+      <figcaption>The band does the stretching, the cord rides along and reports it. Stitched down at both ends, with an alligator clip gripping each end and taped down so a rep can&rsquo;t knock it loose.</figcaption>
     </figure>
     <ol>
       <li><strong>The band is made.</strong> A strip of the black elastic with hook-and-loop (velcro) sewn to the ends so it wraps the upper arm and closes. Sewn, not stuck, so it survives the pull of every rep. Reuse it each session.</li>
-      <li><strong>Attach the cord.</strong> Cut a fresh 4-inch piece of cord. Wrap a stripped jumper wire tightly around each end (the method above), then stitch each end to the elastic about 4 inches apart, middle free. No clips.</li>
+      <li><strong>Attach the cord.</strong> Cut a fresh 4-inch piece of cord. Clip an alligator clip on each end, then stitch or tape each end to the elastic about 4 inches apart, middle free, and tape the clips down so they can&rsquo;t shift.</li>
       <li><strong>Wear it.</strong> Band around the bicep, snug but comfortable, cord along the front where the muscle bulges. The two wires hang down to the breadboard. Sit close to the laptop, keep slack in the leads.</li>
       <li><strong>Record.</strong> Plug in, say "ready", I start a 60-second recording. Hold still 5 seconds, do 5 slow curls, hold still.</li>
       <li><strong>Read it together.</strong> We're looking for 5 bumps. Five bumps means FORM's core idea works on a real arm.</li>
