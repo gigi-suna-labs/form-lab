@@ -1,0 +1,171 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FORM Fabric Band</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper:#FAF8F3; --cream:#F1ECE3; --ink:#0B0A09; --ink-2:#2A2724; --stone:#8B8377; --line:rgba(11,10,9,.14);
+    --blush:#C4A094; --accent:#C2573A; --fabric:#B47C6B; --panel:#FFFFFF; --skin:#EADFD3;
+    --sans:"Instrument Sans",-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --serif:"Instrument Serif",Georgia,serif; --mono:"JetBrains Mono",Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --paper:#0B0A09; --cream:#161412; --ink:#F1ECE3; --ink-2:#D8D2C6; --stone:#A89E90; --line:rgba(241,236,227,.16); --accent:#D96A4E; --fabric:#C98E7A; --panel:#161412; --skin:#3A322B; }
+  }
+  :root[data-theme="dark"] { --paper:#0B0A09; --cream:#161412; --ink:#F1ECE3; --ink-2:#D8D2C6; --stone:#A89E90; --line:rgba(241,236,227,.16); --accent:#D96A4E; --fabric:#C98E7A; --panel:#161412; --skin:#3A322B; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.55; }
+  main { max-width:840px; margin:0 auto; padding:48px 22px 90px; }
+  .eyebrow { font-size:11px; font-weight:600; letter-spacing:.20em; text-transform:uppercase; color:var(--stone); }
+  h1 { font-family:var(--serif); font-weight:400; font-size:2.9rem; line-height:1.03; margin:8px 0 12px; text-wrap:balance; }
+  h1 em { font-style:italic; color:var(--stone); }
+  h2 { font-family:var(--serif); font-weight:400; font-size:1.7rem; margin:0 0 10px; text-wrap:balance; }
+  .lede { color:var(--ink-2); font-size:18px; max-width:60ch; margin-bottom:8px; }
+  section { padding:34px 0; border-top:1px solid var(--line); }
+  p { max-width:64ch; margin:0 0 12px; }
+  figure { margin:22px 0 8px; }
+  svg { display:block; max-width:100%; height:auto; }
+  figcaption { font-size:14px; color:var(--stone); margin-top:12px; max-width:64ch; }
+  .s-label { font-family:var(--sans); font-size:13px; fill:var(--ink); }
+  .s-mono { font-family:var(--mono); font-size:12px; fill:var(--ink); }
+  .s-muted { fill:var(--stone); }
+  .s-acc { fill:var(--accent); }
+  ul { padding-left:20px; max-width:64ch; } li { margin-bottom:8px; }
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:6px; }
+  @media (max-width:640px){ .cols{grid-template-columns:1fr;} }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:16px 18px; }
+  .card h3 { margin:0 0 6px; font-size:15px; }
+  .card.keep { border-left:4px solid var(--blush); }
+  .card.new { border-left:4px solid var(--accent); }
+  .card.test { border-left:4px solid var(--stone); }
+  .mono { font-family:var(--mono); font-size:.9em; }
+  .tag { display:inline-block; font-family:var(--mono); font-size:11px; padding:2px 8px; border-radius:999px; background:var(--cream); color:var(--ink-2); margin-right:6px; }
+</style>
+
+<main>
+  <div class="eyebrow">FORM · design concept · v2</div>
+  <h1>The fabric band, <em>sensor sewn in</em></h1>
+  <p class="lede">Instead of a rubber cord clipped to an elastic strap, the stretch sensor becomes a strip of conductive fabric sewn straight into the band. Flatter, quieter, and one integrated piece instead of parts held together.</p>
+  <p><span class="tag">keep</span> XIAO + IMU + Bluetooth &nbsp; <span class="tag">keep</span> the voltage-divider circuit &nbsp; <span class="tag">change</span> cord → Eeonyx conductive stretch fabric</p>
+
+  <section>
+    <h2>The band, laid flat</h2>
+    <figure>
+      <svg viewBox="0 0 800 300" role="img" aria-label="An elastic armband laid flat. A strip of Eeonyx conductive stretch fabric is sewn along the middle, over where the bicep sits. Two rows of conductive thread cross the strip a fixed distance apart, defining the sensing segment. Two wires run from those rows to a small pod holding the XIAO and battery. Velcro closes the ends." xmlns="http://www.w3.org/2000/svg">
+        <!-- band -->
+        <rect x="30" y="110" width="740" height="80" rx="10" fill="#2B2B2B"/>
+        <!-- velcro ends -->
+        <rect x="30" y="110" width="60" height="80" rx="10" fill="var(--ink-2)"/>
+        <rect x="710" y="110" width="60" height="80" rx="10" fill="var(--ink-2)"/>
+        <text x="60" y="210" class="s-label s-muted" text-anchor="middle">velcro</text>
+        <text x="740" y="210" class="s-label s-muted" text-anchor="middle">velcro</text>
+        <!-- conductive fabric strip sewn in -->
+        <rect x="250" y="126" width="300" height="48" rx="6" fill="var(--fabric)"/>
+        <!-- stitch dashes along fabric edges -->
+        <g stroke="var(--paper)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.7"><line x1="250" y1="128" x2="550" y2="128"/><line x1="250" y1="172" x2="550" y2="172"/></g>
+        <text x="400" y="100" class="s-label s-acc" text-anchor="middle" font-weight="600">Eeonyx conductive stretch fabric, sewn in</text>
+        <!-- two contact lines (conductive thread rows) -->
+        <line x1="280" y1="120" x2="280" y2="180" stroke="var(--ink)" stroke-width="4"/>
+        <line x1="520" y1="120" x2="520" y2="180" stroke="var(--ink)" stroke-width="4"/>
+        <g fill="var(--ink)"><circle cx="280" cy="126" r="2.5"/><circle cx="280" cy="140" r="2.5"/><circle cx="280" cy="154" r="2.5"/><circle cx="280" cy="168" r="2.5"/><circle cx="520" cy="126" r="2.5"/><circle cx="520" cy="140" r="2.5"/><circle cx="520" cy="154" r="2.5"/><circle cx="520" cy="168" r="2.5"/></g>
+        <text x="280" y="205" class="s-label" text-anchor="middle">contact line</text>
+        <text x="520" y="205" class="s-label" text-anchor="middle">contact line</text>
+        <!-- sensing segment brace -->
+        <path d="M280 232 L280 240 L520 240 L520 232" fill="none" stroke="var(--stone)" stroke-width="1.5"/>
+        <text x="400" y="258" class="s-label s-muted" text-anchor="middle">sensing segment — this is what stretches over the muscle</text>
+        <!-- wires to pod -->
+        <path d="M280 126 C 260 60, 640 60, 645 96" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+        <path d="M520 126 C 560 80, 630 80, 650 96" fill="none" stroke="var(--ink-2)" stroke-width="2.5"/>
+        <!-- pod: XIAO + battery -->
+        <rect x="600" y="96" width="100" height="30" rx="6" fill="var(--panel)" stroke="var(--line)"/>
+        <rect x="608" y="102" width="38" height="18" rx="3" fill="var(--fabric)" opacity="0.5"/>
+        <rect x="652" y="102" width="40" height="18" rx="3" fill="#2B2B2B"/>
+        <text x="627" y="115" class="s-mono" text-anchor="middle" fill="var(--ink)" font-size="9">XIAO</text>
+        <text x="672" y="115" class="s-mono" text-anchor="middle" fill="var(--paper)" font-size="9">batt</text>
+        <text x="650" y="82" class="s-label" text-anchor="middle">sensor pod (sewn pocket)</text>
+      </svg>
+      <figcaption>One garment. The fabric replaces the cord, two rows of conductive thread are the contacts, and the XIAO and battery live in a small sewn pocket. No clips, no breadboard, nothing to pop off.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>How it senses</h2>
+    <p>Same principle as the cord and the same circuit. The fabric's resistance <strong>falls</strong> as the segment between the two contact lines stretches, the opposite direction to the rubber cord. The XIAO reads the voltage at the middle of a divider.</p>
+    <figure>
+      <svg viewBox="0 0 760 250" role="img" aria-label="A circuit and mechanism view. 3V3 connects through the conductive fabric segment to the A0 pin; from A0 a fixed resistor goes to GND. An arrow shows that stretching the fabric lowers its resistance, which raises the voltage at A0." xmlns="http://www.w3.org/2000/svg">
+        <!-- 3V3 -->
+        <text x="40" y="70" class="s-mono" fill="var(--ink)">3V3</text>
+        <line x1="70" y1="64" x2="130" y2="64" stroke="currentColor" stroke-width="2"/>
+        <!-- fabric segment as resistor-ish block -->
+        <rect x="130" y="48" width="180" height="32" rx="5" fill="var(--fabric)"/>
+        <line x1="130" y1="42" x2="130" y2="86" stroke="var(--ink)" stroke-width="4"/>
+        <line x1="310" y1="42" x2="310" y2="86" stroke="var(--ink)" stroke-width="4"/>
+        <text x="220" y="34" class="s-label s-acc" text-anchor="middle" font-weight="600">conductive fabric segment</text>
+        <text x="220" y="102" class="s-label s-muted" text-anchor="middle">between the two contact lines</text>
+        <!-- to A0 node -->
+        <line x1="310" y1="64" x2="430" y2="64" stroke="currentColor" stroke-width="2"/>
+        <circle cx="430" cy="64" r="4" fill="currentColor"/>
+        <text x="430" y="52" class="s-mono" text-anchor="middle" fill="var(--ink)">A0</text>
+        <!-- fixed resistor down to GND -->
+        <line x1="430" y1="64" x2="430" y2="120" stroke="currentColor" stroke-width="2"/>
+        <rect x="410" y="120" width="40" height="60" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="470" y="155" class="s-label">fixed resistor</text>
+        <text x="470" y="172" class="s-label s-muted">pick after measuring the fabric</text>
+        <line x1="430" y1="180" x2="430" y2="210" stroke="currentColor" stroke-width="2"/>
+        <line x1="405" y1="210" x2="455" y2="210" stroke="currentColor" stroke-width="2"/>
+        <text x="430" y="228" class="s-mono" text-anchor="middle" fill="var(--ink)">GND</text>
+        <!-- XIAO reads A0 -->
+        <line x1="430" y1="64" x2="560" y2="64" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
+        <rect x="560" y="44" width="90" height="40" rx="6" fill="var(--panel)" stroke="var(--line)"/>
+        <text x="605" y="69" class="s-label" text-anchor="middle">XIAO reads A0</text>
+        <!-- stretch arrow -->
+        <g transform="translate(130,150)">
+          <path d="M0 0 L180 0" stroke="var(--accent)" stroke-width="2"/>
+          <path d="M180 0 L170 -5 L170 5 Z" fill="var(--accent)"/>
+          <path d="M0 0 L-0 0" stroke="var(--accent)" stroke-width="2"/>
+          <text x="90" y="-8" class="s-label s-acc" text-anchor="middle">stretch →</text>
+          <text x="90" y="18" class="s-label s-muted" text-anchor="middle">resistance DOWN → A0 voltage up</text>
+        </g>
+      </svg>
+      <figcaption>Same circuit as the cord. Two differences: the fixed resistor value, because the fabric sits in a higher range, and the direction, because this fabric loses resistance when stretched, so the signal moves the opposite way and the firmware flips the sign.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>What changes, what stays</h2>
+    <div class="cols">
+      <div class="card keep"><h3>Stays the same</h3>
+        <ul>
+          <li>The XIAO, its IMU, and the Bluetooth firmware</li>
+          <li>The voltage-divider idea and the reading code</li>
+          <li>FORM Lab and every metric it computes</li>
+          <li>The velcro band and the sensor pod</li>
+        </ul>
+      </div>
+      <div class="card new"><h3>Changes</h3>
+        <ul>
+          <li>Rubber cord → a strip of conductive stretch fabric, sewn in</li>
+          <li>Alligator clips and wrapped wire → two rows of conductive thread as contacts</li>
+          <li>Solder joints at the sensor → sewn or crimped contacts (fabric can't be soldered)</li>
+          <li>The fixed resistor value, re-picked to match the fabric</li>
+          <li>The signal direction flips: the fabric loses resistance when stretched, so the firmware inverts it</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Before we commit: one bench test</h2>
+    <p>The fabric is a swap, not a redesign, so prove it the same way you proved the cord before sewing anything.</p>
+    <div class="card test">
+      <ul>
+        <li>Cut a strip. Attach two temporary contact lines a set distance apart, conductive thread or foil tape.</li>
+        <li>Measure resistance at rest and stretched, with the multimeter, exactly like the cord session.</li>
+        <li>Check three things: does resistance change enough to read clearly, does it return to rest, and does it drift less than the rubber did.</li>
+        <li>Pick the fixed resistor near the fabric's rest value, then run it through FORM Lab and compare a set of curls against a cord recording.</li>
+      </ul>
+    </div>
+    <p class="lede" style="font-size:16px;margin-top:16px">Open questions the test answers: how sensitive it is, how much it responds to pressure versus stretch, and whether it holds up to being sewn and worn. If it wins on those, the fabric becomes v2. If not, the cord stays and this stays a sketch.</p>
+  </section>
+</main>

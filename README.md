@@ -74,6 +74,8 @@ git push
 
 ## Docs
 - `docs/bench-manual.html` — the picture-by-picture bench manual: pieces, soldering, wiring, the first readings, the on-arm test, and the wireless plan. Open it in a browser.
+- `docs/fabric-design.html` / `docs/fabric-design-ko.html` — the conductive-fabric v2 concept (English / Korean).
+- `docs/fabric-test-materials.md` — parts to order to test the fabric sensor.
 - `docs/findings-2026-09-07.md` — analysis of the first 13 recordings: what holds, what does not, what to collect next.
 - `docs/recording-protocol.html` — what to record and how to label it: setup rule, label fields, the eight exercise classes, clean sets, the messy gym session script.
 

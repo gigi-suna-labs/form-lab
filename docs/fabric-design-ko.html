@@ -1,0 +1,156 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FORM 원단 밴드</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+  :root {
+    --paper:#FAF8F3; --cream:#F1ECE3; --ink:#0B0A09; --ink-2:#2A2724; --stone:#8B8377; --line:rgba(11,10,9,.14);
+    --blush:#C4A094; --accent:#C2573A; --fabric:#B47C6B; --panel:#FFFFFF; --skin:#EADFD3;
+    --sans:"Noto Sans KR","Instrument Sans",-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --serif:"Instrument Serif","Noto Sans KR",Georgia,serif; --mono:"JetBrains Mono",Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --paper:#0B0A09; --cream:#161412; --ink:#F1ECE3; --ink-2:#D8D2C6; --stone:#A89E90; --line:rgba(241,236,227,.16); --accent:#D96A4E; --fabric:#C98E7A; --panel:#161412; --skin:#3A322B; }
+  }
+  :root[data-theme="dark"] { --paper:#0B0A09; --cream:#161412; --ink:#F1ECE3; --ink-2:#D8D2C6; --stone:#A89E90; --line:rgba(241,236,227,.16); --accent:#D96A4E; --fabric:#C98E7A; --panel:#161412; --skin:#3A322B; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.7; }
+  main { max-width:840px; margin:0 auto; padding:48px 22px 90px; }
+  .eyebrow { font-size:11px; font-weight:700; letter-spacing:.20em; text-transform:uppercase; color:var(--stone); }
+  h1 { font-family:var(--serif); font-weight:700; font-size:2.6rem; line-height:1.15; margin:8px 0 12px; text-wrap:balance; }
+  h1 em { font-style:normal; color:var(--stone); font-weight:400; }
+  h2 { font-family:var(--serif); font-weight:700; font-size:1.6rem; margin:0 0 10px; line-height:1.3; text-wrap:balance; }
+  .lede { color:var(--ink-2); font-size:18px; max-width:44ch; margin-bottom:8px; }
+  section { padding:34px 0; border-top:1px solid var(--line); }
+  p { max-width:48ch; margin:0 0 12px; }
+  figure { margin:22px 0 8px; }
+  svg { display:block; max-width:100%; height:auto; }
+  figcaption { font-size:14px; color:var(--stone); margin-top:12px; max-width:52ch; line-height:1.6; }
+  .s-label { font-family:var(--sans); font-size:12.5px; fill:var(--ink); }
+  .s-mono { font-family:var(--mono); font-size:12px; fill:var(--ink); }
+  .s-muted { fill:var(--stone); }
+  .s-acc { fill:var(--accent); }
+  ul { padding-left:20px; max-width:52ch; } li { margin-bottom:8px; }
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:6px; }
+  @media (max-width:640px){ .cols{grid-template-columns:1fr;} }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:16px 18px; }
+  .card h3 { margin:0 0 6px; font-size:15px; }
+  .card.keep { border-left:4px solid var(--blush); }
+  .card.new { border-left:4px solid var(--accent); }
+  .card.test { border-left:4px solid var(--stone); }
+  .mono { font-family:var(--mono); font-size:.9em; }
+  .tag { display:inline-block; font-family:var(--mono); font-size:11px; padding:2px 8px; border-radius:999px; background:var(--cream); color:var(--ink-2); margin-right:6px; }
+</style>
+
+<main>
+  <div class="eyebrow">FORM · 디자인 콘셉트 · v2</div>
+  <h1>원단 밴드, <em>센서를 꿰매어 넣다</em></h1>
+  <p class="lede">고무 코드를 탄성 밴드에 클립으로 다는 대신, 스트레치 센서를 전도성 원단 조각으로 만들어 밴드에 바로 꿰매어 넣습니다. 더 납작하고, 더 안정적이며, 부품을 붙여 놓은 것이 아니라 하나로 통합된 형태입니다.</p>
+  <p><span class="tag">유지</span> XIAO + IMU + 블루투스 &nbsp; <span class="tag">유지</span> 전압 분배 회로 &nbsp; <span class="tag">변경</span> 고무 코드 → Eeonyx 전도성 스트레치 원단</p>
+
+  <section>
+    <h2>펼쳐 놓은 밴드</h2>
+    <figure>
+      <svg viewBox="0 0 800 300" role="img" aria-label="펼쳐 놓은 탄성 암밴드. 가운데 이두근이 닿는 위치에 Eeonyx 전도성 스트레치 원단 조각이 꿰매어져 있고, 일정 간격으로 두 줄의 전도성 실이 원단을 가로질러 감지 구간을 정한다. 그 두 줄에서 나온 두 개의 선이 XIAO와 배터리가 든 작은 파우치로 이어진다. 양 끝은 벨크로로 닫힌다." xmlns="http://www.w3.org/2000/svg">
+        <rect x="30" y="110" width="740" height="80" rx="10" fill="#2B2B2B"/>
+        <rect x="30" y="110" width="60" height="80" rx="10" fill="var(--ink-2)"/>
+        <rect x="710" y="110" width="60" height="80" rx="10" fill="var(--ink-2)"/>
+        <text x="60" y="210" class="s-label s-muted" text-anchor="middle">벨크로</text>
+        <text x="740" y="210" class="s-label s-muted" text-anchor="middle">벨크로</text>
+        <rect x="250" y="126" width="300" height="48" rx="6" fill="var(--fabric)"/>
+        <g stroke="var(--paper)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.7"><line x1="250" y1="128" x2="550" y2="128"/><line x1="250" y1="172" x2="550" y2="172"/></g>
+        <text x="400" y="100" class="s-label s-acc" text-anchor="middle" font-weight="700">Eeonyx 전도성 스트레치 원단, 꿰매어 넣음</text>
+        <line x1="280" y1="120" x2="280" y2="180" stroke="var(--ink)" stroke-width="4"/>
+        <line x1="520" y1="120" x2="520" y2="180" stroke="var(--ink)" stroke-width="4"/>
+        <g fill="var(--ink)"><circle cx="280" cy="126" r="2.5"/><circle cx="280" cy="140" r="2.5"/><circle cx="280" cy="154" r="2.5"/><circle cx="280" cy="168" r="2.5"/><circle cx="520" cy="126" r="2.5"/><circle cx="520" cy="140" r="2.5"/><circle cx="520" cy="154" r="2.5"/><circle cx="520" cy="168" r="2.5"/></g>
+        <text x="280" y="205" class="s-label" text-anchor="middle">접점 라인</text>
+        <text x="520" y="205" class="s-label" text-anchor="middle">접점 라인</text>
+        <path d="M280 232 L280 240 L520 240 L520 232" fill="none" stroke="var(--stone)" stroke-width="1.5"/>
+        <text x="400" y="258" class="s-label s-muted" text-anchor="middle">감지 구간 — 근육 위에서 늘어나는 부분</text>
+        <path d="M280 126 C 260 60, 640 60, 645 96" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+        <path d="M520 126 C 560 80, 630 80, 650 96" fill="none" stroke="var(--ink-2)" stroke-width="2.5"/>
+        <rect x="600" y="96" width="100" height="30" rx="6" fill="var(--panel)" stroke="var(--line)"/>
+        <rect x="608" y="102" width="38" height="18" rx="3" fill="var(--fabric)" opacity="0.5"/>
+        <rect x="652" y="102" width="40" height="18" rx="3" fill="#2B2B2B"/>
+        <text x="627" y="115" class="s-mono" text-anchor="middle" fill="var(--ink)" font-size="9">XIAO</text>
+        <text x="672" y="115" class="s-mono" text-anchor="middle" fill="var(--paper)" font-size="9">배터리</text>
+        <text x="650" y="82" class="s-label" text-anchor="middle">센서 파우치 (꿰맨 주머니)</text>
+      </svg>
+      <figcaption>하나의 의류입니다. 원단이 코드를 대신하고, 전도성 실 두 줄이 접점이 되며, XIAO와 배터리는 작은 꿰맨 주머니 안에 들어갑니다. 클립도, 브레드보드도, 빠질 부품도 없습니다.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>감지 원리</h2>
+    <p>코드와 똑같은 원리이고 회로도 동일합니다. 두 접점 라인 사이의 구간이 늘어날수록 원단의 저항이 <strong>작아집니다</strong> — 고무 코드와 반대 방향입니다. XIAO는 분배 회로 가운데 지점의 전압을 읽습니다.</p>
+    <figure>
+      <svg viewBox="0 0 760 250" role="img" aria-label="회로와 원리 그림. 3V3가 전도성 원단 구간을 거쳐 A0 핀으로 연결되고, A0에서 고정 저항이 GND로 이어진다. 원단을 늘리면 저항이 작아지고 A0의 전압이 높아진다는 화살표가 표시된다." xmlns="http://www.w3.org/2000/svg">
+        <text x="40" y="70" class="s-mono" fill="var(--ink)">3V3</text>
+        <line x1="70" y1="64" x2="130" y2="64" stroke="currentColor" stroke-width="2"/>
+        <rect x="130" y="48" width="180" height="32" rx="5" fill="var(--fabric)"/>
+        <line x1="130" y1="42" x2="130" y2="86" stroke="var(--ink)" stroke-width="4"/>
+        <line x1="310" y1="42" x2="310" y2="86" stroke="var(--ink)" stroke-width="4"/>
+        <text x="220" y="34" class="s-label s-acc" text-anchor="middle" font-weight="700">전도성 원단 구간</text>
+        <text x="220" y="102" class="s-label s-muted" text-anchor="middle">두 접점 라인 사이</text>
+        <line x1="310" y1="64" x2="430" y2="64" stroke="currentColor" stroke-width="2"/>
+        <circle cx="430" cy="64" r="4" fill="currentColor"/>
+        <text x="430" y="52" class="s-mono" text-anchor="middle" fill="var(--ink)">A0</text>
+        <line x1="430" y1="64" x2="430" y2="120" stroke="currentColor" stroke-width="2"/>
+        <rect x="410" y="120" width="40" height="60" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="470" y="152" class="s-label">고정 저항</text>
+        <text x="470" y="170" class="s-label s-muted">원단 측정 후 값 선택</text>
+        <line x1="430" y1="180" x2="430" y2="210" stroke="currentColor" stroke-width="2"/>
+        <line x1="405" y1="210" x2="455" y2="210" stroke="currentColor" stroke-width="2"/>
+        <text x="430" y="228" class="s-mono" text-anchor="middle" fill="var(--ink)">GND</text>
+        <line x1="430" y1="64" x2="560" y2="64" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
+        <rect x="560" y="44" width="110" height="40" rx="6" fill="var(--panel)" stroke="var(--line)"/>
+        <text x="615" y="69" class="s-label" text-anchor="middle">XIAO가 A0 읽음</text>
+        <g transform="translate(130,150)">
+          <path d="M0 0 L180 0" stroke="var(--accent)" stroke-width="2"/>
+          <path d="M180 0 L170 -5 L170 5 Z" fill="var(--accent)"/>
+          <text x="90" y="-8" class="s-label s-acc" text-anchor="middle">늘어남 →</text>
+          <text x="90" y="18" class="s-label s-muted" text-anchor="middle">저항 감소 → A0 전압 증가</text>
+        </g>
+      </svg>
+      <figcaption>코드와 같은 회로입니다. 다른 점은 두 가지: 원단이 더 높은 저항 범위에 있어 고정 저항 값이 다르고, 이 원단은 늘어날 때 저항이 줄어들어 신호가 반대로 움직이므로 펌웨어에서 부호를 뒤집습니다.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>바뀌는 것, 그대로인 것</h2>
+    <div class="cols">
+      <div class="card keep"><h3>그대로 유지</h3>
+        <ul>
+          <li>XIAO, IMU, 블루투스 펌웨어</li>
+          <li>전압 분배 방식과 측정 코드</li>
+          <li>FORM Lab과 계산하는 모든 지표</li>
+          <li>벨크로 밴드와 센서 파우치</li>
+        </ul>
+      </div>
+      <div class="card new"><h3>변경</h3>
+        <ul>
+          <li>고무 코드 → 꿰매어 넣은 전도성 스트레치 원단</li>
+          <li>악어 클립·감은 전선 → 전도성 실 두 줄을 접점으로</li>
+          <li>센서 부위 납땜 → 꿰매거나 압착 접점 (원단은 납땜 불가)</li>
+          <li>고정 저항 값을 원단에 맞게 다시 선택</li>
+          <li>신호 방향이 반대: 원단은 늘어날 때 저항이 줄어들어 펌웨어에서 부호를 뒤집음</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>확정 전에: 벤치 테스트 한 번</h2>
+    <p>원단은 재설계가 아니라 교체이므로, 꿰매기 전에 코드를 검증했던 방식 그대로 검증합니다.</p>
+    <div class="card test">
+      <ul>
+        <li>원단을 잘라, 일정 간격으로 임시 접점 라인 두 개를 답니다 (전도성 실이나 포일 테이프).</li>
+        <li>멀티미터로 쉴 때와 늘렸을 때 저항을 측정합니다 — 코드 세션과 똑같이.</li>
+        <li>세 가지를 확인합니다: 저항이 뚜렷하게 읽힐 만큼 변하는가, 원래 값으로 돌아오는가, 고무보다 드리프트가 적은가.</li>
+        <li>고정 저항을 원단의 휴식 저항값 근처로 고른 뒤, FORM Lab으로 컬 세트를 코드 기록과 비교합니다.</li>
+      </ul>
+    </div>
+    <p class="lede" style="font-size:16px;margin-top:16px">테스트로 답할 질문: 얼마나 민감한가, 늘어남 대비 눌림에 얼마나 반응하는가, 꿰매고 착용해도 견디는가. 이 항목들에서 이기면 원단이 v2가 됩니다. 아니면 코드를 유지하고 이건 스케치로 남습니다.</p>
+  </section>
+</main>
