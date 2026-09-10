@@ -7,7 +7,7 @@ const { ReadlineParser } = require('@serialport/parser-readline');
 
 const PORT = 4000;
 const SESSIONS = path.join(__dirname, 'sessions');
-const PUBLIC = path.join(__dirname, 'public');
+const PUBLIC = path.join(__dirname, 'docs');
 fs.mkdirSync(SESSIONS, { recursive: true });
 
 let serial = null, serialPath = null, clients = new Set();

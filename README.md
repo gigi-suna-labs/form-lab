@@ -81,7 +81,7 @@ git push
 
 ## What's in here
 - `server.js` — Node server. Accepts USB serial or browser-relayed BLE sample batches, sends server-sent events at `/stream`, and exposes REST under `/api`.
-- `public/index.html` — the page. Direct Web Bluetooth receiver and canvas charts, no framework.
+- `docs/index.html` — the page. Direct Web Bluetooth receiver and canvas charts, no framework.
 - `sessions/` — one `.csv` per recording (`t_ms,raw,volts,ohms,ax,ay,az,gx,gy,gz` at 20 Hz) and a `.json` beside it with the labels and marks.
 - `firmware/form_logger.uf2` — the board program, drag-and-drop installable. Source in `firmware/form_logger/form_logger.ino` (build with the Arduino board "XIAO nRF52840 Sense (No Updates)" and the "Seeed Arduino LSM6DS3" library).
 
