@@ -10,6 +10,33 @@ const SESSIONS = path.join(__dirname, 'sessions');
 const PUBLIC = path.join(__dirname, 'docs');
 fs.mkdirSync(SESSIONS, { recursive: true });
 
+// --- Supabase (optional): reads .env, writes each saved session to the shared DB ---
+(function loadEnv(){ try { for (const line of fs.readFileSync(path.join(__dirname, '.env'),'utf8').split('\n')) { const m = line.match(/^([A-Z0-9_]+)=(.*)$/); if (m && !process.env[m[1]]) process.env[m[1]] = m[2].trim(); } } catch {} })();
+const SB_URL = process.env.SUPABASE_URL, SB_KEY = process.env.SUPABASE_ANON_KEY;
+function repsAndSeconds(rows) { // rows: {t(ms), ohms}
+  const n = rows.length; if (!n) return { reps: 0, seconds: 0 };
+  const R = rows.map(r => ({ t: r.t/1000, ohms: r.ohms }));
+  const sm = new Array(n); let buf = [];
+  for (let i=0;i<n;i++){ buf.push(R[i]); while(buf.length && R[i].t-buf[0].t>0.35) buf.shift(); sm[i]=buf.reduce((a,x)=>a+x.ohms,0)/buf.length; }
+  const base = new Array(n); let w = [];
+  for (let i=0;i<n;i++){ w.push({t:R[i].t,v:sm[i]}); while(w.length && R[i].t-w[0].t>8) w.shift(); const srt=w.map(x=>x.v).sort((a,b)=>a-b); base[i]=srt[Math.floor(srt.length*0.1)]; }
+  let reps=0,armed=true,pv=0,pt=0,ps=0,last=-9;
+  for (let i=0;i<n;i++){ const hi=base[i]+Math.max(30,base[i]*0.04), lo=base[i]+Math.max(12,base[i]*0.015);
+    if(armed&&sm[i]>hi){armed=false;pv=sm[i];pt=R[i].t;ps=R[i].t;}
+    else if(!armed){ if(sm[i]>pv){pv=sm[i];pt=R[i].t;} if(sm[i]<lo){armed=true; if(pt-last>=0.8&&R[i].t-ps>=0.3){reps++;last=pt;}} } }
+  return { reps, seconds: Math.round(R[n-1].t) };
+}
+async function pushToSupabase(row) {
+  if (!SB_URL || !SB_KEY) return;
+  try {
+    const res = await fetch(SB_URL + '/rest/v1/sessions', { method:'POST',
+      headers:{ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY, 'Content-Type':'application/json', Prefer:'return=minimal' },
+      body: JSON.stringify(row) });
+    if (!res.ok) console.log('supabase insert failed', res.status, (await res.text()).slice(0,200));
+    else console.log('supabase: saved', row.name);
+  } catch (e) { console.log('supabase error', e.message); }
+}
+
 let serial = null, serialPath = null, clients = new Set();
 let recording = null; // { name, file, rows, startedAt }
 let lastSample = null;
@@ -97,8 +124,13 @@ function stopRecording() {
   const head = imu ? 't_ms,raw,volts,ohms,ax,ay,az,gx,gy,gz' : 't_ms,raw,volts,ohms';
   const body = head + '\n' + r.rows.map(s => imu ? `${s.t},${s.raw},${s.volts},${s.ohms},${s.ax ?? 0},${s.ay ?? 0},${s.az ?? 0},${s.gx ?? 0},${s.gy ?? 0},${s.gz ?? 0}` : `${s.t},${s.raw},${s.volts},${s.ohms}`).join('\n');
   fs.writeFileSync(file, body);
-  writeMeta(r.name, { meta: r.meta, marks: r.marks, startedAt: new Date(r.startedAt).toISOString(), seconds: r.rows.length ? (r.rows[r.rows.length - 1].t - r.rows[0].t) / 1000 : 0 });
+  const stat = repsAndSeconds(r.rows.map(s => ({ t: s.t, ohms: s.ohms })));
+  writeMeta(r.name, { meta: r.meta, marks: r.marks, startedAt: new Date(r.startedAt).toISOString(), seconds: stat.seconds });
   broadcast({ type: 'recording', active: false, name: r.name, saved: true });
+  const m = r.meta || {};
+  pushToSupabase({ id: Date.now(), name: r.name, person: m.subject || null, band_on: m.placement || null,
+    exercise: m.exercise || null, load: m.load || null, reps_planned: m.reps || null,
+    reps_detected: stat.reps, notes: m.notes || null, seconds: stat.seconds, csv: body });
   return r.name;
 }
 
